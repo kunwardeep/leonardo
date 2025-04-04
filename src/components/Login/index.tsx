@@ -1,36 +1,23 @@
 "use client";
 
-import { CLIENT_VALIDATION_MESSAGES } from "@/consts/clientValidationMessages";
 import { Button, Card, Flex, Stack } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import InputField from "../ui/InputField";
-import { create, enforce, test } from "vest";
 import { vestResolver } from "@hookform/resolvers/vest";
 import { useUser } from "../Context/UserContext";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-
-const validationSuite = create((data = {}) => {
-  test("username", CLIENT_VALIDATION_MESSAGES.USER_NAME.IS_EMPTY, () => {
-    enforce(data.username.trim()).isNotEmpty();
-  });
-
-  test("username", CLIENT_VALIDATION_MESSAGES.USER_NAME.TOO_SHORT, () => {
-    enforce(data.username.trim()).longerThanOrEquals(2);
-  });
-
-  test("jobTitle", CLIENT_VALIDATION_MESSAGES.JOB_TITLE.IS_EMPTY, () => {
-    enforce(data.jobTitle.trim()).isNotEmpty();
-  });
-
-  test("jobTitle", CLIENT_VALIDATION_MESSAGES.JOB_TITLE.TOO_SHORT, () => {
-    enforce(data.jobTitle.trim()).longerThanOrEquals(3);
-  });
-});
+import { useEffect, useMemo } from "react";
+import {
+  VALIDATION_FIELDS,
+  validationSuite,
+} from "@/utils/userDetailsValidation";
 
 const Login = () => {
   const { user, setUser, userLoading } = useUser();
   const router = useRouter();
+  const userNameDefaultValue = { [VALIDATION_FIELDS.USERNAME]: "" };
+  const jobTitleDefaultValue = { [VALIDATION_FIELDS.JOB_TITLE]: "" };
+
   const {
     reset,
     register,
@@ -38,20 +25,17 @@ const Login = () => {
     formState: { errors },
   } = useForm({
     resolver: vestResolver(validationSuite),
-    defaultValues: {
-      username: "",
-      jobTitle: "",
-    },
+    defaultValues: { userNameDefaultValue, jobTitleDefaultValue },
     mode: "onBlur",
   });
 
-  let userLoggedIn = !userLoading && user;
+  const userLoggedIn = useMemo(() => !userLoading && user, [user, userLoading]);
 
   useEffect(() => {
     if (userLoggedIn) {
       router.push("/information");
     }
-  }, [userLoggedIn]);
+  }, [router, userLoggedIn]);
 
   if (userLoading) {
     return;
@@ -59,13 +43,10 @@ const Login = () => {
 
   const handleOnSubmit = (data: { [x: string]: string }) => {
     // TODO: Stop multiple submit
-    const username = data["username"];
-    const jobTitle = data["jobTitle"];
+    const username = data[VALIDATION_FIELDS.USERNAME];
+    const jobTitle = data[VALIDATION_FIELDS.JOB_TITLE];
     if (username && jobTitle) {
-      const saved = setUser({
-        username: jobTitle,
-        jobTitle: jobTitle,
-      });
+      const saved = setUser({ username, jobTitle });
       if (saved) {
         router.push("/information");
       } else {
@@ -93,16 +74,16 @@ const Login = () => {
             <Card.Body>
               <Stack w="full">
                 <InputField
-                  registration={register("username")}
+                  registration={register(VALIDATION_FIELDS.USERNAME)}
                   label={"Username"}
                   placeholder={"Enter your username"}
-                  error={errors["username"]?.message}
+                  error={errors[VALIDATION_FIELDS.USERNAME]?.message}
                 />
                 <InputField
-                  registration={register("jobTitle")}
+                  registration={register(VALIDATION_FIELDS.JOB_TITLE)}
                   label={"Job Title"}
                   placeholder={"Enter your job title"}
-                  error={errors["jobTitle"]?.message}
+                  error={errors[VALIDATION_FIELDS.JOB_TITLE]?.message}
                 />
               </Stack>
             </Card.Body>

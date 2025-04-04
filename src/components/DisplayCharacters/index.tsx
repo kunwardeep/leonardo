@@ -4,11 +4,16 @@ import AuthGuard from "@/components/Auth/AuthGuard";
 import useGetCharacters from "@/hooks/useGetCharacters";
 import CharacterCard from "./CharacterCard";
 import { Flex, For, Stack } from "@chakra-ui/react";
+import Chrome from "../Chrome";
+import CharactersLoading from "./CharactersLoading";
+import CharactersError from "./CharactersError";
 
 const DisplayCharacters = () => {
   return (
     <AuthGuard>
-      <DisplayCharactersComponent />
+      <Chrome>
+        <DisplayCharactersComponent />
+      </Chrome>
     </AuthGuard>
   );
 };
@@ -17,21 +22,17 @@ const DisplayCharactersComponent = () => {
   const { loading, data, error } = useGetCharacters({ page: 1 });
 
   if (loading) {
-    return <div>loading</div>;
+    return <CharactersLoading />;
   }
+
   if (error) {
-    return <div>Error</div>;
+    return <CharactersError />;
   }
+
   if (data) {
     return (
       <Flex padding={3} gap="1" align="center" justify="center">
-        <Stack
-          maxW={1040}
-          direction="row"
-          wrap={"wrap"}
-          align="center"
-          justify="center"
-        >
+        <Stack direction="row" wrap={"wrap"} align="center" justify="center">
           <For each={data.characters.results}>
             {(item) => (
               <CharacterCard

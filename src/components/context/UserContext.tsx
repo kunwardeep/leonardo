@@ -40,6 +40,7 @@ interface UserContextType {
   user: User | null;
   setUser: (user: User) => boolean;
   removeUser: () => boolean;
+  fetchUser: () => User | null;
   userLoading: boolean;
 }
 
@@ -66,6 +67,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     return removeUser();
   };
 
+  const fetchUser = () => {
+    return getUser();
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -73,6 +78,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         setUser: saveUser,
         removeUser: deleteUser,
         userLoading: userLoading,
+        fetchUser: fetchUser,
       }}
     >
       {children}
