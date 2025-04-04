@@ -122,7 +122,7 @@ const UserSettings = () => {
       <Chrome>
         {user && (
           <Flex align="top" justify="center" padding={10} direction="column">
-            <Text paddingBottom={10} textStyle="3xl">
+            <Text paddingBottom={10} textStyle="2xl">
               User Settings
             </Text>
             <EditableInputField
