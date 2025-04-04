@@ -13,6 +13,9 @@ const GET_CHARACTERS = gql`
         id
         name
         image
+        status
+        species
+        gender
       }
     }
   }
@@ -22,8 +25,30 @@ interface IUseCharacters {
   page: number;
 }
 
+interface IUseGetCharactersResponse {
+  characters: {
+    info: {
+      pages: number;
+      count: number;
+      next: number | null;
+      prev: number | null;
+    };
+
+    results: Array<{
+      id: number;
+      name: string;
+      image: string;
+      status: string;
+      species: string;
+      gender: string;
+    }>;
+  };
+}
+
 const useGetCharacters = ({ page }: IUseCharacters) => {
-  return useQuery(GET_CHARACTERS, { variables: { page } });
+  return useQuery<IUseGetCharactersResponse>(GET_CHARACTERS, {
+    variables: { page },
+  });
 };
 
 export default useGetCharacters;
