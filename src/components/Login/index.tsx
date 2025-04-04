@@ -6,8 +6,9 @@ import { useForm } from "react-hook-form";
 import InputField from "../ui/InputField";
 import { create, enforce, test } from "vest";
 import { vestResolver } from "@hookform/resolvers/vest";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../Context/UserContext";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const validationSuite = create((data = {}) => {
   test("username", CLIENT_VALIDATION_MESSAGES.USER_NAME.IS_EMPTY, () => {
@@ -15,7 +16,7 @@ const validationSuite = create((data = {}) => {
   });
 
   test("username", CLIENT_VALIDATION_MESSAGES.USER_NAME.TOO_SHORT, () => {
-    enforce(data.username.trim()).longerThan(2);
+    enforce(data.username.trim()).longerThanOrEquals(2);
   });
 
   test("jobTitle", CLIENT_VALIDATION_MESSAGES.JOB_TITLE.IS_EMPTY, () => {
@@ -30,7 +31,6 @@ const validationSuite = create((data = {}) => {
 const Login = () => {
   const { user, setUser, userLoading } = useUser();
   const router = useRouter();
-
   const {
     reset,
     register,
@@ -45,17 +45,20 @@ const Login = () => {
     mode: "onBlur",
   });
 
+  let userLoggedIn = !userLoading && user;
+
+  useEffect(() => {
+    if (userLoggedIn) {
+      router.push("/information");
+    }
+  }, [userLoggedIn]);
+
   if (userLoading) {
     return;
   }
 
-  if (!userLoading && user) {
-    // User Logged in. Push them to the information page
-    router.push("/information");
-    return;
-  }
-
   const handleOnSubmit = (data: { [x: string]: string }) => {
+    // TODO: Stop multiple submit
     const username = data["username"];
     const jobTitle = data["jobTitle"];
     if (username && jobTitle) {
@@ -76,44 +79,46 @@ const Login = () => {
     reset();
   };
 
-  return (
-    <Flex align="center" justify="center" className="bg-gray-100 h-dvh w-dvw">
-      <form onSubmit={handleSubmit(handleOnSubmit)}>
-        <Card.Root size="lg" minW="lg">
-          <Card.Header>
-            <Card.Title>Sign up</Card.Title>
-            <Card.Description>
-              Fill in the details to use the App
-            </Card.Description>
-          </Card.Header>
-          <Card.Body>
-            <Stack w="full">
-              <InputField
-                registration={register("username")}
-                label={"Username"}
-                placeholder={"Enter your username"}
-                error={errors["username"]?.message}
-              />
-              <InputField
-                registration={register("jobTitle")}
-                label={"Job Title"}
-                placeholder={"Enter your job title"}
-                error={errors["jobTitle"]?.message}
-              />
-            </Stack>
-          </Card.Body>
-          <Card.Footer justifyContent="flex-end">
-            <Button variant="outline" onClick={handleOnClear}>
-              Clear
-            </Button>
-            <Button variant="solid" type="submit">
-              Sign in
-            </Button>
-          </Card.Footer>
-        </Card.Root>
-      </form>
-    </Flex>
-  );
+  if (!userLoggedIn) {
+    return (
+      <Flex align="center" justify="center" className="bg-gray-100 h-dvh w-dvw">
+        <form onSubmit={handleSubmit(handleOnSubmit)}>
+          <Card.Root size="lg" minW="lg">
+            <Card.Header>
+              <Card.Title>Sign up</Card.Title>
+              <Card.Description>
+                Fill in the details to use the App
+              </Card.Description>
+            </Card.Header>
+            <Card.Body>
+              <Stack w="full">
+                <InputField
+                  registration={register("username")}
+                  label={"Username"}
+                  placeholder={"Enter your username"}
+                  error={errors["username"]?.message}
+                />
+                <InputField
+                  registration={register("jobTitle")}
+                  label={"Job Title"}
+                  placeholder={"Enter your job title"}
+                  error={errors["jobTitle"]?.message}
+                />
+              </Stack>
+            </Card.Body>
+            <Card.Footer justifyContent="flex-end">
+              <Button variant="outline" onClick={handleOnClear}>
+                Clear
+              </Button>
+              <Button variant="solid" type="submit">
+                Sign in
+              </Button>
+            </Card.Footer>
+          </Card.Root>
+        </form>
+      </Flex>
+    );
+  }
 };
 
 export default Login;

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../Context/UserContext";
 import { useRouter } from "next/navigation";
 
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
