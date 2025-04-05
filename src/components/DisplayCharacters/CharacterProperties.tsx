@@ -1,5 +1,5 @@
 import { ICharacterCard } from "./CharacterCard";
-import { Flex, Icon } from "@chakra-ui/react";
+import { Flex, IconButton } from "@chakra-ui/react";
 import { Tooltip } from "@/components/ChakraUi/tooltip";
 import { RiGenderlessLine as GenderLessIcon } from "react-icons/ri";
 import { BsGenderMale as MaleIcon } from "react-icons/bs";
@@ -36,7 +36,9 @@ const SpeciesIcon = ({ species }: { species: string }) => {
       showArrow
       positioning={{ placement: "top" }}
     >
-      <Icon size="lg">{icon(species)}</Icon>
+      <IconButton size="md" variant="ghost" cursor={"default"}>
+        {icon(species)}
+      </IconButton>
     </Tooltip>
   );
 };
@@ -59,7 +61,9 @@ const StatusIcon = ({ status }: { status: string }) => {
       showArrow
       positioning={{ placement: "top" }}
     >
-      <Icon size="lg">{icon(status)}</Icon>
+      <IconButton size="md" variant="ghost" cursor={"default"}>
+        {icon(status)}
+      </IconButton>
     </Tooltip>
   );
 };
@@ -84,7 +88,9 @@ const GenderIcon = ({ gender }: { gender: string }) => {
       showArrow
       positioning={{ placement: "top" }}
     >
-      <Icon size="lg">{icon(gender)}</Icon>
+      <IconButton size="md" variant="ghost" cursor={"default"}>
+        {icon(gender)}
+      </IconButton>
     </Tooltip>
   );
 };

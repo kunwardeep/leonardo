@@ -63,8 +63,6 @@ const Login = () => {
 
   if (!userLoggedIn) {
     return (
-      // <Flex align="center" justify="center" className="bg-gray-100 h-dvh w-dvw">
-
       <Flex align="center" justify="center">
         <form onSubmit={handleSubmit(handleOnSubmit)}>
           <Card.Root size="lg" minW="lg">

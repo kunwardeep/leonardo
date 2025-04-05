@@ -1,12 +1,8 @@
 "use client";
 
-import {
-  ButtonGroup,
-  IconButton,
-  Pagination,
-  useBreakpointValue,
-} from "@chakra-ui/react";
-import React, { useEffect, useRef } from "react";
+import { BREAKPOINT, useBreakPoint } from "@/consts/breakpoints";
+import { ButtonGroup, IconButton, Pagination } from "@chakra-ui/react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
@@ -28,28 +24,22 @@ const CharactersPagination = ({
   const [buttonGroupSize, setButtonGroupSize] = useState<"xs" | "sm" | "lg">(
     "lg"
   );
-
-  const currentSize = useBreakpointValue({
-    base: "mobile",
-    md: "tablet",
-    lg: "desktop",
-  });
+  const currentBreakPoint = useBreakPoint();
 
   useEffect(() => {
-    if (currentSize) {
-      console.log("Breakpoint changed:", currentSize);
-      if (currentSize === "mobile") {
+    if (currentBreakPoint) {
+      if (currentBreakPoint === BREAKPOINT.MOBILE) {
         setSiblingCount(0);
         setButtonGroupSize("xs");
-      } else if (currentSize === "tablet") {
+      } else if (currentBreakPoint === BREAKPOINT.TABLET) {
         setSiblingCount(1);
         setButtonGroupSize("sm");
-      } else if (currentSize === "desktop") {
+      } else if (currentBreakPoint === BREAKPOINT.DESKTOP) {
         setSiblingCount(2);
         setButtonGroupSize("lg");
       }
     }
-  }, [currentSize]);
+  }, [currentBreakPoint]);
 
   useEffect(() => {
     setPage(currentPage);

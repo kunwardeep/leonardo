@@ -1,10 +1,18 @@
 import { Card, Flex, Text } from "@chakra-ui/react";
 import { Tooltip } from "@/components/ChakraUi/tooltip";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import CharacterAvatar from "./CharacterAvatar";
 import CharacterProperties from "./CharacterProperties";
 import React from "react";
 import CharacterDetails from "../CharacterDetails";
+import { BREAKPOINT, useBreakPoint } from "@/consts/breakpoints";
+
+const CARD_DIMENSION_DESKTOP = 220;
+const CARD_DIMENSION_TABLET = 160;
+const CARD_DIMENSION_MOBILE = 150;
+const CARD_IMAGE_SIZE_DESKTOP = 100;
+const CARD_IMAGE_SIZE_TABLET = 85;
+const CARD_IMAGE_SIZE_MOBILE = 70;
 
 export interface ICharacterCard {
   id: number;
@@ -26,54 +34,76 @@ const CharacterCard = ({
   species,
   gender,
 }: ICharacterCard) => {
-  const textRef = useRef<HTMLParagraphElement>(null);
-  const [isTruncated, setIsTruncated] = useState(false);
+  const [cardDimension, setCardDimension] = useState(CARD_DIMENSION_DESKTOP);
+  const [imageSize, setImageSize] = useState(CARD_IMAGE_SIZE_DESKTOP);
+  const [showCharacterProperties, setShowCharacterProperties] = useState(true);
+  const currentBreakPoint = useBreakPoint();
 
   useEffect(() => {
-    const textIsTruncated =
-      (textRef.current?.scrollHeight ?? 0) >
-      (textRef.current?.clientHeight ?? 0);
-
-    setIsTruncated(textIsTruncated);
-  }, []);
+    if (currentBreakPoint) {
+      if (currentBreakPoint === BREAKPOINT.MOBILE) {
+        setCardDimension(CARD_DIMENSION_MOBILE);
+        setImageSize(CARD_IMAGE_SIZE_MOBILE);
+        setShowCharacterProperties(false);
+      } else if (currentBreakPoint === BREAKPOINT.TABLET) {
+        setCardDimension(CARD_DIMENSION_TABLET);
+        setImageSize(CARD_IMAGE_SIZE_TABLET);
+        setShowCharacterProperties(false);
+      } else if (currentBreakPoint === BREAKPOINT.DESKTOP) {
+        setCardDimension(CARD_DIMENSION_DESKTOP);
+        setImageSize(CARD_IMAGE_SIZE_DESKTOP);
+        setShowCharacterProperties(true);
+      }
+    }
+  }, [currentBreakPoint]);
 
   return (
-    <Card.Root width={200} height={200} overflow="hidden">
+    <Card.Root width={cardDimension} height={cardDimension} overflow="hidden">
       <Flex
         padding={3}
-        gap={1}
+        gap={2}
         direction={"column"}
         align="center"
         justify="center"
-        className="relative block w-full h-full"
+        position={"relative"}
       >
-        <CharacterAvatar src={image.src} alt={image.alt} />
-        <CharacterDetails characterId={id} name={name}>
+        <CharacterAvatar src={image.src} alt={image.alt} size={imageSize} />
+        <CharacterDetails characterId={id}>
           <Tooltip
             aria-label={`Full name: ${name}`}
             content={name}
-            disabled={!isTruncated}
             showArrow
             positioning={{ placement: "top" }}
           >
             <Text
-              ref={textRef}
               padding={1}
               truncate
               fontWeight="semibold"
               lineClamp="1"
+              zIndex={1}
               textAlign={"center"}
             >
               {name}
             </Text>
           </Tooltip>
         </CharacterDetails>
-        <CharacterProperties
-          status={status}
-          species={species}
-          gender={gender}
-        />
       </Flex>
+      {/* non clickable area */}
+      {showCharacterProperties && (
+        <Flex
+          border={1}
+          gap={1}
+          direction={"column"}
+          align="center"
+          justify="center"
+        >
+          <CharacterProperties
+            status={status}
+            species={species}
+            gender={gender}
+          />
+        </Flex>
+      )}
     </Card.Root>
   );
 };

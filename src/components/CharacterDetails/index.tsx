@@ -1,21 +1,41 @@
-import { Button, CloseButton, Dialog, Link, Portal } from "@chakra-ui/react";
+import { Button, CloseButton, Dialog, Portal } from "@chakra-ui/react";
+import CharacterInfo from "./CharacterInfo";
+import useGetCharacter from "@/hooks/useGetCharacter";
+import CharacterDetailsLoading from "./CharacterDetailsLoading copy";
+import CharacterDetailsError from "./CharacterDetailsError";
 
 interface ICharacterDetails {
   characterId: number;
-  name: string;
   children: React.ReactNode;
 }
 
-const CharacterDetails = ({
-  characterId,
-  children,
-  name,
-}: ICharacterDetails) => {
+const DialogBody = ({ characterId }: { characterId: number }) => {
+  const { loading, data, error, refetch } = useGetCharacter({
+    id: characterId,
+  });
+
+  const handleRefetch = () => {
+    refetch();
+  };
+
+  if (loading) {
+    return <CharacterDetailsLoading />;
+  }
+  if (error) {
+    return <CharacterDetailsError onRetry={handleRefetch} />;
+  }
+  if (data) {
+    return <CharacterInfo character={data?.character} />;
+  }
+};
+
+const CharacterDetails = ({ characterId, children }: ICharacterDetails) => {
   return (
-    <Dialog.Root scrollBehavior="inside" size="lg">
+    <Dialog.Root scrollBehavior="inside" size="sm">
       <Dialog.Trigger asChild>
-        <Button variant="plain" position="static">
-          {children} <span className="absolute z-10 inset-0 "></span>
+        <Button variant="plain" position="unset">
+          {children}
+          <span className="absolute inset-0 "></span>
         </Button>
       </Dialog.Trigger>
       <Portal>
@@ -23,12 +43,14 @@ const CharacterDetails = ({
         <Dialog.Positioner>
           <Dialog.Content>
             <Dialog.Header>
-              <Dialog.Title>{name}</Dialog.Title>
+              <Dialog.Title>{"Character Details"}</Dialog.Title>
             </Dialog.Header>
             <Dialog.CloseTrigger asChild>
-              <CloseButton size="sm" />
+              <CloseButton size="lg" />
             </Dialog.CloseTrigger>
-            <Dialog.Body>{characterId}</Dialog.Body>
+            <Dialog.Body>
+              <DialogBody characterId={characterId} />
+            </Dialog.Body>
           </Dialog.Content>
         </Dialog.Positioner>
       </Portal>

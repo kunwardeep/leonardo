@@ -3,15 +3,13 @@
 import AuthGuard from "@/components/Auth/AuthGuard";
 import useGetCharacters from "@/hooks/useGetCharacters";
 import CharacterCard from "./CharacterCard";
-import { Flex, For, Stack } from "@chakra-ui/react";
-
+import { Flex, For } from "@chakra-ui/react";
 import CharactersLoading from "./CharactersLoading";
 import CharactersError from "./CharactersError";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback } from "react";
 import CharactersPagination from "./CharactersPagination";
 import CharactersNoResult from "./CharactersNoResult";
-import CharacterDetails from "../CharacterDetails";
 
 const DisplayCharacters = () => {
   return (

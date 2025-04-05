@@ -48,6 +48,7 @@ interface IUseGetCharactersResponse {
 const useGetCharacters = ({ page }: IUseCharacters) => {
   return useQuery<IUseGetCharactersResponse>(GET_CHARACTERS, {
     variables: { page },
+    notifyOnNetworkStatusChange: true,
   });
 };
 

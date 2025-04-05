@@ -1,6 +1,5 @@
-import { Avatar, Flex, Mark, Text } from "@chakra-ui/react";
+import { Avatar, Flex, Text } from "@chakra-ui/react";
 import { useUser } from "../Context/UserContext";
-import { useRouter } from "next/navigation";
 import HomePageIcon from "@/assets/images/r_and_m.png";
 import { Tooltip } from "@/components/ChakraUi/tooltip";
 import { useId } from "react";

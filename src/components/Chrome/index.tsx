@@ -8,7 +8,7 @@ import React from "react";
 const Chrome = ({ children }: { children: React.ReactNode }) => {
   return (
     <Flex width="100%" justify="center">
-      <Flex width={1200} padding={3} gap={1} direction="column">
+      <Flex width={1400} padding={3} gap={1} direction="column">
         <Header />
         {children}
       </Flex>
