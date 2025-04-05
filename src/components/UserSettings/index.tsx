@@ -1,8 +1,8 @@
 "use client";
 
 import { Field, Flex, Text, IconButton, Input } from "@chakra-ui/react";
-import AuthGuard from "@/components/Auth/AuthGuard";
 import { useEffect, useRef, useState } from "react";
+import AuthGuard from "@/components/Auth/AuthGuard";
 import {
   useFieldValidation,
   VALIDATION_FIELDS,
