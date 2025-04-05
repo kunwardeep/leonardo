@@ -1,6 +1,5 @@
 "use client";
 
-import AuthGuard from "@/components/Auth/AuthGuard";
 import useGetCharacters from "@/hooks/useGetCharacters";
 import CharacterCard from "./CharacterCard";
 import { Flex, For } from "@chakra-ui/react";
@@ -10,6 +9,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import CharactersPagination from "./CharactersPagination";
 import CharactersNoResult from "./CharactersNoResult";
 import ErrorComponent from "../ErrorComponent";
+import AuthGuard from "../Auth/AuthGuard";
 
 const DisplayCharacters = () => {
   return (
