@@ -11,6 +11,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback } from "react";
 import CharactersPagination from "./CharactersPagination";
 import CharactersNoResult from "./CharactersNoResult";
+import CharacterDetails from "../CharacterDetails";
 
 const DisplayCharacters = () => {
   return (
@@ -39,9 +40,9 @@ const DisplayCharactersComponent = () => {
   );
 
   const navigateToPage = (page: number) => {
-    // ?page=${pageValue()}
     router.push(pathname + "?" + createQueryString("page", page));
   };
+
   if (loading) {
     return <CharactersLoading />;
   }
@@ -53,7 +54,13 @@ const DisplayCharactersComponent = () => {
   if (data) {
     return (
       <Flex padding={10} wrap={"wrap"} align="center" justify="center">
-        <Flex direction="row" wrap={"wrap"} align="center" justify="center">
+        <Flex
+          gap={2}
+          direction="row"
+          wrap={"wrap"}
+          align="center"
+          justify="center"
+        >
           <For each={data.characters.results} fallback={<CharactersNoResult />}>
             {(item) => (
               <CharacterCard

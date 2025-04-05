@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import CharacterAvatar from "./CharacterAvatar";
 import CharacterProperties from "./CharacterProperties";
 import React from "react";
+import CharacterDetails from "../CharacterDetails";
 
 export interface ICharacterCard {
   id: number;
@@ -18,6 +19,7 @@ export interface ICharacterCard {
 }
 
 const CharacterCard = ({
+  id,
   image,
   name,
   status,
@@ -39,30 +41,33 @@ const CharacterCard = ({
     <Card.Root width={200} height={200} overflow="hidden">
       <Flex
         padding={3}
-        gap={2}
+        gap={1}
         direction={"column"}
         align="center"
         justify="center"
+        className="relative block w-full h-full"
       >
         <CharacterAvatar src={image.src} alt={image.alt} />
-        <Tooltip
-          aria-label={`Full name: ${name}`}
-          content={name}
-          disabled={!isTruncated}
-          showArrow
-          positioning={{ placement: "top" }}
-        >
-          <Text
-            ref={textRef}
-            padding={1}
-            truncate
-            fontWeight="semibold"
-            lineClamp="1"
-            textAlign={"center"}
+        <CharacterDetails characterId={id} name={name}>
+          <Tooltip
+            aria-label={`Full name: ${name}`}
+            content={name}
+            disabled={!isTruncated}
+            showArrow
+            positioning={{ placement: "top" }}
           >
-            {name}
-          </Text>
-        </Tooltip>
+            <Text
+              ref={textRef}
+              padding={1}
+              truncate
+              fontWeight="semibold"
+              lineClamp="1"
+              textAlign={"center"}
+            >
+              {name}
+            </Text>
+          </Tooltip>
+        </CharacterDetails>
         <CharacterProperties
           status={status}
           species={species}
