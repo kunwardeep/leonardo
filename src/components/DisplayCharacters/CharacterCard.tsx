@@ -1,4 +1,4 @@
-import { Card, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { Tooltip } from "@/components/ChakraUi/tooltip";
 import { useEffect, useState } from "react";
 import CharacterAvatar from "./CharacterAvatar";
@@ -6,10 +6,8 @@ import CharacterProperties from "./CharacterProperties";
 import React from "react";
 import CharacterDetails from "../CharacterDetails";
 import { BREAKPOINT, useBreakPoint } from "@/consts/breakpoints";
+import CharacterCardShell from "./CharacterCardShell";
 
-const CARD_DIMENSION_DESKTOP = 220;
-const CARD_DIMENSION_TABLET = 160;
-const CARD_DIMENSION_MOBILE = 150;
 const CARD_IMAGE_SIZE_DESKTOP = 100;
 const CARD_IMAGE_SIZE_TABLET = 85;
 const CARD_IMAGE_SIZE_MOBILE = 70;
@@ -34,31 +32,29 @@ const CharacterCard = ({
   species,
   gender,
 }: ICharacterCard) => {
-  const [cardDimension, setCardDimension] = useState(CARD_DIMENSION_DESKTOP);
-  const [imageSize, setImageSize] = useState(CARD_IMAGE_SIZE_DESKTOP);
+  const [imageSize, setImageSize] = useState<number>(CARD_IMAGE_SIZE_MOBILE);
   const [showCharacterProperties, setShowCharacterProperties] = useState(true);
   const currentBreakPoint = useBreakPoint();
 
   useEffect(() => {
-    if (currentBreakPoint) {
-      if (currentBreakPoint === BREAKPOINT.MOBILE) {
-        setCardDimension(CARD_DIMENSION_MOBILE);
+    if (!currentBreakPoint) return;
+
+    switch (currentBreakPoint) {
+      case BREAKPOINT.MOBILE:
         setImageSize(CARD_IMAGE_SIZE_MOBILE);
         setShowCharacterProperties(false);
-      } else if (currentBreakPoint === BREAKPOINT.TABLET) {
-        setCardDimension(CARD_DIMENSION_TABLET);
+        break;
+      case BREAKPOINT.TABLET:
         setImageSize(CARD_IMAGE_SIZE_TABLET);
         setShowCharacterProperties(false);
-      } else if (currentBreakPoint === BREAKPOINT.DESKTOP) {
-        setCardDimension(CARD_DIMENSION_DESKTOP);
+        break;
+      case BREAKPOINT.DESKTOP:
         setImageSize(CARD_IMAGE_SIZE_DESKTOP);
         setShowCharacterProperties(true);
-      }
     }
   }, [currentBreakPoint]);
-
   return (
-    <Card.Root width={cardDimension} height={cardDimension} overflow="hidden">
+    <CharacterCardShell>
       <Flex
         padding={3}
         gap={2}
@@ -104,7 +100,7 @@ const CharacterCard = ({
           />
         </Flex>
       )}
-    </Card.Root>
+    </CharacterCardShell>
   );
 };
 

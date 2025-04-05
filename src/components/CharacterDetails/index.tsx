@@ -2,7 +2,7 @@ import { Button, CloseButton, Dialog, Portal } from "@chakra-ui/react";
 import CharacterInfo from "./CharacterInfo";
 import useGetCharacter from "@/hooks/useGetCharacter";
 import CharacterDetailsLoading from "./CharacterDetailsLoading copy";
-import CharacterDetailsError from "./CharacterDetailsError";
+import ErrorComponent from "../ErrorComponent";
 
 interface ICharacterDetails {
   characterId: number;
@@ -22,7 +22,7 @@ const DialogBody = ({ characterId }: { characterId: number }) => {
     return <CharacterDetailsLoading />;
   }
   if (error) {
-    return <CharacterDetailsError onRetry={handleRefetch} />;
+    return <ErrorComponent onRetry={handleRefetch} />;
   }
   if (data) {
     return <CharacterInfo character={data?.character} />;

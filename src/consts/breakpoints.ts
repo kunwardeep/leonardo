@@ -7,9 +7,12 @@ export const BREAKPOINT = {
 };
 
 export const useBreakPoint = () => {
-  return useBreakpointValue({
-    base: BREAKPOINT.MOBILE,
-    md: BREAKPOINT.TABLET,
-    lg: BREAKPOINT.DESKTOP,
-  });
+  return useBreakpointValue(
+    {
+      base: BREAKPOINT.MOBILE,
+      md: BREAKPOINT.TABLET,
+      lg: BREAKPOINT.DESKTOP,
+    },
+    { ssr: false }
+  );
 };

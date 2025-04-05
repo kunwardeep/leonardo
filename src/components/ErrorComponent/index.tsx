@@ -1,15 +1,15 @@
 import { Box, VStack, Icon, Button, Text } from "@chakra-ui/react";
 import { PiWarningOctagonThin as WarningIcon } from "react-icons/pi";
 
-interface ICharacterDetailsError {
+interface ICErrorComponent {
   message?: string;
-  onRetry: () => void;
+  onRetry?: () => void;
 }
 
-const CharacterDetailsError = ({
+const ErrorComponent = ({
   message = "Something went wrong!",
   onRetry,
-}: ICharacterDetailsError) => {
+}: ICErrorComponent) => {
   return (
     <Box
       borderWidth="1px"
@@ -35,4 +35,4 @@ const CharacterDetailsError = ({
   );
 };
 
-export default CharacterDetailsError;
+export default ErrorComponent;

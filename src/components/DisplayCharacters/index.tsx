@@ -5,11 +5,11 @@ import useGetCharacters from "@/hooks/useGetCharacters";
 import CharacterCard from "./CharacterCard";
 import { Flex, For } from "@chakra-ui/react";
 import CharactersLoading from "./CharactersLoading";
-import CharactersError from "./CharactersError";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import CharactersPagination from "./CharactersPagination";
 import CharactersNoResult from "./CharactersNoResult";
+import ErrorComponent from "../ErrorComponent";
 
 const DisplayCharacters = () => {
   return (
@@ -20,12 +20,19 @@ const DisplayCharacters = () => {
 };
 
 const DisplayCharactersComponent = () => {
+  const [showPagination, setShowPagination] = useState(false);
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
 
   const currentPage = Number(searchParams.get("page") || 1);
-  const { loading, data, error } = useGetCharacters({ page: currentPage });
+  const { loading, data, error, refetch } = useGetCharacters({
+    page: currentPage,
+  });
+
+  const handleRefetch = () => {
+    refetch();
+  };
 
   const createQueryString = useCallback(
     (name: string, value: number) => {
@@ -41,12 +48,20 @@ const DisplayCharactersComponent = () => {
     router.push(pathname + "?" + createQueryString("page", page));
   };
 
+  useEffect(() => {
+    if (data?.characters.info.count) {
+      setShowPagination(true);
+    }
+  }, [data?.characters.info.count]);
+
   if (loading) {
     return <CharactersLoading />;
   }
 
   if (error) {
-    return <CharactersError />;
+    return (
+      <ErrorComponent message="Unable to load users" onRetry={handleRefetch} />
+    );
   }
 
   if (data) {
@@ -76,7 +91,7 @@ const DisplayCharactersComponent = () => {
             )}
           </For>
         </Flex>
-        {data.characters.info.count && (
+        {showPagination && (
           <CharactersPagination
             pageSize={20}
             count={data.characters.info.count}

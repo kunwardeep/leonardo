@@ -6,6 +6,10 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
+const BTN_GROUP_SZ_DESKTOP = "lg";
+const BTN_GROUP_SZ_TABLET = "sm";
+const BTN_GROUP_SZ_MOBILE = "xs";
+
 interface ICharactersPagination {
   pageSize: number;
   count: number;
@@ -20,24 +24,27 @@ const CharactersPagination = ({
   navigate,
 }: ICharactersPagination) => {
   const [page, setPage] = useState(currentPage);
-  const [siblingCount, setSiblingCount] = useState(2);
-  const [buttonGroupSize, setButtonGroupSize] = useState<"xs" | "sm" | "lg">(
-    "lg"
-  );
+  const [buttonGroupSize, setButtonGroupSize] = useState<
+    | typeof BTN_GROUP_SZ_MOBILE
+    | typeof BTN_GROUP_SZ_TABLET
+    | typeof BTN_GROUP_SZ_DESKTOP
+  >();
+
   const currentBreakPoint = useBreakPoint();
 
   useEffect(() => {
-    if (currentBreakPoint) {
-      if (currentBreakPoint === BREAKPOINT.MOBILE) {
-        setSiblingCount(0);
-        setButtonGroupSize("xs");
-      } else if (currentBreakPoint === BREAKPOINT.TABLET) {
-        setSiblingCount(1);
-        setButtonGroupSize("sm");
-      } else if (currentBreakPoint === BREAKPOINT.DESKTOP) {
-        setSiblingCount(2);
-        setButtonGroupSize("lg");
-      }
+    if (!currentBreakPoint) return;
+
+    switch (currentBreakPoint) {
+      case BREAKPOINT.MOBILE:
+        setButtonGroupSize(BTN_GROUP_SZ_MOBILE);
+        break;
+      case BREAKPOINT.TABLET:
+        setButtonGroupSize(BTN_GROUP_SZ_TABLET);
+        break;
+      case BREAKPOINT.DESKTOP:
+        setButtonGroupSize(BTN_GROUP_SZ_DESKTOP);
+        break;
     }
   }, [currentBreakPoint]);
 
@@ -61,7 +68,7 @@ const CharactersPagination = ({
       page={page}
       onPageChange={handlePageChange(setPage)}
       paddingTop={10}
-      siblingCount={siblingCount}
+      siblingCount={0}
     >
       <ButtonGroup attached variant="outline" size={buttonGroupSize}>
         <Pagination.PrevTrigger asChild>
