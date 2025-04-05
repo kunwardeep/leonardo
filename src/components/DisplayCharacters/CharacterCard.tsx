@@ -5,8 +5,9 @@ import CharacterAvatar from "./CharacterAvatar";
 import CharacterProperties from "./CharacterProperties";
 import React from "react";
 import CharacterDetails from "../CharacterDetails";
-import { BREAKPOINT, useBreakPoint } from "@/consts/breakpoints";
+import { BREAKPOINT } from "@/consts/breakpoints";
 import CharacterCardShell from "./CharacterCardShell";
+import { useBreakPoint } from "@/hooks/useBreakPoint";
 
 const CARD_IMAGE_SIZE_DESKTOP = 100;
 const CARD_IMAGE_SIZE_TABLET = 85;

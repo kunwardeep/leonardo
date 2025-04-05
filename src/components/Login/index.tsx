@@ -12,7 +12,8 @@ import {
   validationSuite,
 } from "@/utils/userDetailsValidation";
 import React from "react";
-import { BREAKPOINT, useBreakPoint } from "@/consts/breakpoints";
+import { BREAKPOINT } from "@/consts/breakpoints";
+import { useBreakPoint } from "@/hooks/useBreakPoint";
 
 const Login = () => {
   const { user, setUser, userLoading } = useUser();
