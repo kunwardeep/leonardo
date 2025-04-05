@@ -8,8 +8,8 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 import CharactersPagination from "./CharactersPagination";
 import CharactersNoResult from "./CharactersNoResult";
-import ErrorComponent from "../ErrorComponent";
-import AuthGuard from "../Auth/AuthGuard";
+import ErrorComponent from "@/components/ErrorComponent";
+import AuthGuard from "@/components/Auth/AuthGuard";
 
 const DisplayCharacters = () => {
   return (

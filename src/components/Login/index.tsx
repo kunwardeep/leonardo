@@ -2,9 +2,9 @@
 
 import { Button, Card, Flex, Stack } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import InputField from "../ui/InputField";
+import InputField from "@/components/ui/InputField";
 import { vestResolver } from "@hookform/resolvers/vest";
-import { useUser } from "../Context/UserContext";
+import { useUser } from "@/components/Context/UserContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import {

@@ -1,7 +1,7 @@
 "use client";
 
 import { Avatar, defineStyle, Flex, IconButton, Text } from "@chakra-ui/react";
-import { useUser } from "../Context/UserContext";
+import { useUser } from "@/components/Context/UserContext";
 import HomePageIcon from "@/assets/images/r_and_m.png";
 import { Tooltip } from "@/components/ChakraUi/tooltip";
 import { useId } from "react";

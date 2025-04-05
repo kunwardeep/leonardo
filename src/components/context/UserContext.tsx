@@ -1,4 +1,5 @@
 "use client";
+
 import { createContext, useContext, useEffect, useState } from "react";
 const LOCAL_STORAGE_KEY = "leonardo_user";
 

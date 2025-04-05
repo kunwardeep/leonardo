@@ -1,13 +1,13 @@
 "use client";
 
 import { Field, Flex, Text, IconButton, Input } from "@chakra-ui/react";
-import AuthGuard from "../Auth/AuthGuard";
+import AuthGuard from "@/components/Auth/AuthGuard";
 import { useEffect, useRef, useState } from "react";
 import {
   useFieldValidation,
   VALIDATION_FIELDS,
 } from "@/utils/userDetailsValidation";
-import { useUser } from "../Context/UserContext";
+import { useUser } from "@/components/Context/UserContext";
 import { LuPencilLine, LuX, LuCheck } from "react-icons/lu";
 import { LABEL } from "@/consts/fieldLabel";
 import React from "react";

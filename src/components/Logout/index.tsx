@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Flex, Skeleton, Text } from "@chakra-ui/react";
-import { useUser } from "../Context/UserContext";
+import { useUser } from "@/components/Context/UserContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
