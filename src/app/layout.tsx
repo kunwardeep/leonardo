@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Provider as ChakraProvider } from "@/components/ChakraUi/provider";
-import { UserProvider } from "@/components/Context/UserContext";
 import ApolloProviderWrapper from "@/components/ApolloProviderWrapper";
 import Chrome from "@/components/Chrome";
+import { UserProvider } from "@/components/Context/UserContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
