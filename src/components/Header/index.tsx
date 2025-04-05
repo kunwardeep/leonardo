@@ -20,11 +20,8 @@ const UserMenu = ({
   const handleLogoutUser = () => {
     const logoutSuccess = logoutUser();
     if (logoutSuccess) {
-      console.log("Success");
       sessionStorage.clear();
       window.location.href = "/logout";
-    } else {
-      console.log("Unable to logout");
     }
   };
 

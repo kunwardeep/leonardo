@@ -67,9 +67,6 @@ const Login = () => {
       const saved = setUser({ username, jobTitle });
       if (saved) {
         router.push("/information");
-      } else {
-        // TODO: Display some error
-        console.log("Unable to save");
       }
     }
   };
