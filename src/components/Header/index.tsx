@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar, defineStyle, Flex, IconButton, Text } from "@chakra-ui/react";
 import { useUser } from "../Context/UserContext";
 import HomePageIcon from "@/assets/images/r_and_m.png";
@@ -7,6 +9,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Menu, Portal } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 
 const UserMenu = ({
   username,
@@ -15,11 +18,13 @@ const UserMenu = ({
   username: string;
   logoutUser: () => boolean;
 }) => {
+  const router = useRouter();
+
   const handleLogoutUser = () => {
     const logoutSuccess = logoutUser();
     if (logoutSuccess) {
       sessionStorage.clear();
-      window.location.href = "/logout";
+      router.refresh();
     }
   };
 
