@@ -3,6 +3,7 @@ import { Tooltip } from "@/components/ChakraUi/tooltip";
 import { useEffect, useRef, useState } from "react";
 import CharacterAvatar from "./CharacterAvatar";
 import CharacterProperties from "./CharacterProperties";
+import React from "react";
 
 export interface ICharacterCard {
   id: number;
@@ -72,4 +73,4 @@ const CharacterCard = ({
   );
 };
 
-export default CharacterCard;
+export default React.memo(CharacterCard);

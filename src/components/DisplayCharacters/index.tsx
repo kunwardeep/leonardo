@@ -4,22 +4,26 @@ import AuthGuard from "@/components/Auth/AuthGuard";
 import useGetCharacters from "@/hooks/useGetCharacters";
 import CharacterCard from "./CharacterCard";
 import { Flex, For, Stack } from "@chakra-ui/react";
-import Chrome from "../Chrome";
+
 import CharactersLoading from "./CharactersLoading";
 import CharactersError from "./CharactersError";
+import { useSearchParams } from "next/navigation";
+import React from "react";
 
 const DisplayCharacters = () => {
   return (
     <AuthGuard>
-      <Chrome>
-        <DisplayCharactersComponent />
-      </Chrome>
+      <DisplayCharactersComponent />
     </AuthGuard>
   );
 };
 
 const DisplayCharactersComponent = () => {
-  const { loading, data, error } = useGetCharacters({ page: 1 });
+  const searchParams = useSearchParams();
+
+  const { loading, data, error } = useGetCharacters({
+    page: Number(searchParams.get("page") || 1),
+  });
 
   if (loading) {
     return <CharactersLoading />;
@@ -55,4 +59,4 @@ const DisplayCharactersComponent = () => {
   }
 };
 
-export default DisplayCharacters;
+export default React.memo(DisplayCharacters);

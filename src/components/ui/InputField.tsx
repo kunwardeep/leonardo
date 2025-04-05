@@ -1,4 +1,5 @@
 import { Field, Input } from "@chakra-ui/react";
+import React from "react";
 import { useState } from "react";
 import {
   FieldError,
@@ -66,4 +67,4 @@ const InputField = ({
   );
 };
 
-export default InputField;
+export default React.memo(InputField);

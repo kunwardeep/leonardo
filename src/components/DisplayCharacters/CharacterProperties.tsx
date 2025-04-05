@@ -11,6 +11,7 @@ import { CiFaceFrown as DeadIcon } from "react-icons/ci";
 import { PiPersonLight as HumanIcon } from "react-icons/pi";
 import { PiAlienThin as AlienIcon } from "react-icons/pi";
 import { BsPersonSlash as UnknownSpeciesIcon } from "react-icons/bs";
+import React from "react";
 
 type ICharacterProperties = Pick<
   ICharacterCard,
@@ -102,4 +103,4 @@ const CharacterProperties = ({
   );
 };
 
-export default CharacterProperties;
+export default React.memo(CharacterProperties);

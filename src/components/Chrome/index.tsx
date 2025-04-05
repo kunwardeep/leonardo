@@ -3,6 +3,8 @@
 import { Flex } from "@chakra-ui/react";
 import Header from "../Header";
 
+import React from "react";
+
 const Chrome = ({ children }: { children: React.ReactNode }) => {
   return (
     <Flex width="100%" justify="center">
@@ -14,4 +16,4 @@ const Chrome = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default Chrome;
+export default React.memo(Chrome);

@@ -1,4 +1,5 @@
 import { Image } from "@chakra-ui/react";
+import React from "react";
 
 const CharacterAvatar = ({ src }: { src: string; alt: string }) => {
   return (
@@ -12,4 +13,4 @@ const CharacterAvatar = ({ src }: { src: string; alt: string }) => {
   );
 };
 
-export default CharacterAvatar;
+export default React.memo(CharacterAvatar);

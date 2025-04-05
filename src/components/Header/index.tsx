@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import HomePageIcon from "@/assets/images/r_and_m.png";
 import { Tooltip } from "@/components/ChakraUi/tooltip";
 import { useId } from "react";
+import React from "react";
+import Image from "next/image";
 
 const Header = () => {
   const { user } = useUser();
@@ -18,36 +20,47 @@ const Header = () => {
     router.push("/information");
   };
 
-  if (user) {
-    return (
-      <Flex align="center" justifyContent={"space-between"} gap={5} padding={1}>
+  return (
+    <Flex align="center" justifyContent={"space-between"} padding={1}>
+      <Flex align="center" gap={5} padding={1}>
+        <Avatar.Root
+          shape="rounded"
+          size="2xl"
+          onClick={handleHomePageOnClick}
+          cursor={"pointer"}
+        >
+          <Image
+            src={HomePageIcon}
+            alt="Home Page"
+            layout="intrinsic"
+            width={100}
+            height={100}
+          />
+        </Avatar.Root>
+        <Text
+          textStyle="4xl"
+          onClick={handleHomePageOnClick}
+          cursor={"pointer"}
+          overflow={"hidden"}
+          whiteSpace={"nowrap"}
+        >
+          Rick and Morty
+        </Text>
+      </Flex>
+      {user && (
         <Flex align="center" gap={5} padding={1}>
-          <Avatar.Root
-            shape="rounded"
-            size="2xl"
-            onClick={handleHomePageOnClick}
-            cursor={"pointer"}
-          >
-            <Avatar.Image src={HomePageIcon.src} alt="Home Page" />
-          </Avatar.Root>
           <Text
-            textStyle="4xl"
-            onClick={handleHomePageOnClick}
+            textStyle="1xl"
+            hideBelow="md"
+            onClick={handleSettingsPageOnClick}
             cursor={"pointer"}
+            padding={1}
+            truncate
+            fontWeight="semibold"
+            lineClamp="1"
+            textAlign={"right"}
           >
-            Rick and Morty
-          </Text>
-        </Flex>
-        <Flex align="center" gap={5} padding={1}>
-          <Text hideBelow="md">
-            Welcome{" "}
-            <Mark
-              variant={"text"}
-              onClick={handleSettingsPageOnClick}
-              cursor={"pointer"}
-            >
-              {user.username}
-            </Mark>
+            {user.username}
           </Text>
           <Tooltip
             ids={{ trigger: id }}
@@ -66,9 +79,9 @@ const Header = () => {
             </Avatar.Root>
           </Tooltip>
         </Flex>
-      </Flex>
-    );
-  }
+      )}
+    </Flex>
+  );
 };
 
-export default Header;
+export default React.memo(Header);

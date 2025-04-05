@@ -2,7 +2,6 @@
 
 import { Field, Flex, Text, IconButton, Input } from "@chakra-ui/react";
 import AuthGuard from "../Auth/AuthGuard";
-import Chrome from "../Chrome";
 import { useEffect, useState } from "react";
 import {
   useFieldValidation,
@@ -11,6 +10,7 @@ import {
 import { useUser } from "../Context/UserContext";
 import { LuPencilLine, LuX, LuCheck } from "react-icons/lu";
 import { LABEL } from "@/consts/fieldLabel";
+import React from "react";
 
 interface IEditableField {
   fieldToValidate: string;
@@ -119,29 +119,27 @@ const UserSettings = () => {
 
   return (
     <AuthGuard>
-      <Chrome>
-        {user && (
-          <Flex align="top" justify="center" padding={10} direction="column">
-            <Text paddingBottom={10} textStyle="2xl">
-              User Settings
-            </Text>
-            <EditableInputField
-              fieldToValidate={VALIDATION_FIELDS.USERNAME}
-              currentValue={user.username}
-              label={LABEL.USERNAME}
-              saveValue={saveUserName}
-            />
-            <EditableInputField
-              fieldToValidate={VALIDATION_FIELDS.JOB_TITLE}
-              currentValue={user.jobTitle}
-              label={LABEL.JOB_TITLE}
-              saveValue={saveJobTitle}
-            />
-          </Flex>
-        )}
-      </Chrome>
+      {user && (
+        <Flex align="top" justify="center" padding={10} direction="column">
+          <Text paddingBottom={10} textStyle="2xl">
+            User Settings
+          </Text>
+          <EditableInputField
+            fieldToValidate={VALIDATION_FIELDS.USERNAME}
+            currentValue={user.username}
+            label={LABEL.USERNAME}
+            saveValue={saveUserName}
+          />
+          <EditableInputField
+            fieldToValidate={VALIDATION_FIELDS.JOB_TITLE}
+            currentValue={user.jobTitle}
+            label={LABEL.JOB_TITLE}
+            saveValue={saveJobTitle}
+          />
+        </Flex>
+      )}
     </AuthGuard>
   );
 };
 
-export default UserSettings;
+export default React.memo(UserSettings);

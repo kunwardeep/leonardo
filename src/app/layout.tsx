@@ -4,6 +4,7 @@ import "./globals.css";
 import { Provider as ChakraProvider } from "@/components/ChakraUi/provider";
 import { UserProvider } from "@/components/Context/UserContext";
 import ApolloProviderWrapper from "@/components/ApolloProviderWrapper";
+import Chrome from "@/components/Chrome";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,9 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       >
         <ApolloProviderWrapper>
           <ChakraProvider>
-            <UserProvider> {children}</UserProvider>
+            <UserProvider>
+              <Chrome>{children}</Chrome>
+            </UserProvider>
           </ChakraProvider>
         </ApolloProviderWrapper>
       </body>

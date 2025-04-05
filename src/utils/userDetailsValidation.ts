@@ -33,7 +33,7 @@ export const validationSuite = create((data = {}) => {
       VALIDATION_FIELDS.USERNAME,
       CLIENT_VALIDATION_MESSAGES.USER_NAME.TOO_LONG,
       () => {
-        enforce(username).shorterThanOrEquals(100);
+        enforce(username).shorterThanOrEquals(50);
       },
       `${VALIDATION_FIELDS.USERNAME}_too_long`
     );
@@ -64,7 +64,7 @@ export const validationSuite = create((data = {}) => {
       VALIDATION_FIELDS.JOB_TITLE,
       CLIENT_VALIDATION_MESSAGES.JOB_TITLE.TOO_LONG,
       () => {
-        enforce(jobTitle).shorterThanOrEquals(100);
+        enforce(jobTitle).shorterThanOrEquals(50);
       },
       `${VALIDATION_FIELDS.JOB_TITLE}_too_long`
     );
