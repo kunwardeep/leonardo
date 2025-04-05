@@ -7,8 +7,10 @@ import { Flex, For, Stack } from "@chakra-ui/react";
 
 import CharactersLoading from "./CharactersLoading";
 import CharactersError from "./CharactersError";
-import { useSearchParams } from "next/navigation";
-import React from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { useCallback } from "react";
+import CharactersPagination from "./CharactersPagination";
+import CharactersNoResult from "./CharactersNoResult";
 
 const DisplayCharacters = () => {
   return (
@@ -20,11 +22,26 @@ const DisplayCharacters = () => {
 
 const DisplayCharactersComponent = () => {
   const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
 
-  const { loading, data, error } = useGetCharacters({
-    page: Number(searchParams.get("page") || 1),
-  });
+  const currentPage = Number(searchParams.get("page") || 1);
+  const { loading, data, error } = useGetCharacters({ page: currentPage });
 
+  const createQueryString = useCallback(
+    (name: string, value: number) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value.toString());
+
+      return params.toString();
+    },
+    [searchParams]
+  );
+
+  const navigateToPage = (page: number) => {
+    // ?page=${pageValue()}
+    router.push(pathname + "?" + createQueryString("page", page));
+  };
   if (loading) {
     return <CharactersLoading />;
   }
@@ -35,9 +52,9 @@ const DisplayCharactersComponent = () => {
 
   if (data) {
     return (
-      <Flex padding={3} gap="1" align="center" justify="center">
-        <Stack direction="row" wrap={"wrap"} align="center" justify="center">
-          <For each={data.characters.results}>
+      <Flex padding={10} wrap={"wrap"} align="center" justify="center">
+        <Flex direction="row" wrap={"wrap"} align="center" justify="center">
+          <For each={data.characters.results} fallback={<CharactersNoResult />}>
             {(item) => (
               <CharacterCard
                 key={item.id}
@@ -53,7 +70,15 @@ const DisplayCharactersComponent = () => {
               />
             )}
           </For>
-        </Stack>
+        </Flex>
+        {data.characters.info.count && (
+          <CharactersPagination
+            pageSize={20}
+            count={data.characters.info.count}
+            currentPage={currentPage}
+            navigate={navigateToPage}
+          />
+        )}
       </Flex>
     );
   }

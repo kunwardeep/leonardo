@@ -39,6 +39,7 @@ const Header = () => {
         </Avatar.Root>
         <Text
           textStyle="4xl"
+          mdDown={{ textStyle: "2xl" }}
           onClick={handleHomePageOnClick}
           cursor={"pointer"}
           overflow={"hidden"}
