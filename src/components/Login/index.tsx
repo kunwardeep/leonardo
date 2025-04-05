@@ -6,16 +6,20 @@ import InputField from "../ui/InputField";
 import { vestResolver } from "@hookform/resolvers/vest";
 import { useUser } from "../Context/UserContext";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   VALIDATION_FIELDS,
   validationSuite,
 } from "@/utils/userDetailsValidation";
 import React from "react";
+import { BREAKPOINT, useBreakPoint } from "@/consts/breakpoints";
 
 const Login = () => {
   const { user, setUser, userLoading } = useUser();
   const router = useRouter();
+  const currentBreakPoint = useBreakPoint();
+  const [cardMinWidth, setCardMinWidth] = useState<"sm" | "lg">();
+
   const userNameDefaultValue = { [VALIDATION_FIELDS.USERNAME]: "" };
   const jobTitleDefaultValue = { [VALIDATION_FIELDS.JOB_TITLE]: "" };
 
@@ -37,6 +41,19 @@ const Login = () => {
       router.push("/information");
     }
   }, [router, userLoggedIn]);
+
+  useEffect(() => {
+    if (!currentBreakPoint) return;
+
+    switch (currentBreakPoint) {
+      case BREAKPOINT.MOBILE:
+      case BREAKPOINT.TABLET:
+        setCardMinWidth("sm");
+        break;
+      case BREAKPOINT.DESKTOP:
+        setCardMinWidth("lg");
+    }
+  }, [currentBreakPoint]);
 
   if (userLoading) {
     return;
@@ -61,11 +78,11 @@ const Login = () => {
     reset();
   };
 
-  if (!userLoggedIn) {
+  if (!userLoggedIn && cardMinWidth) {
     return (
       <Flex align="center" justify="center">
         <form onSubmit={handleSubmit(handleOnSubmit)}>
-          <Card.Root size="lg" minW="lg">
+          <Card.Root size="lg" minW={cardMinWidth}>
             <Card.Header>
               <Card.Title>Sign up</Card.Title>
               <Card.Description>

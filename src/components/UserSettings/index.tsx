@@ -2,7 +2,7 @@
 
 import { Field, Flex, Text, IconButton, Input } from "@chakra-ui/react";
 import AuthGuard from "../Auth/AuthGuard";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   useFieldValidation,
   VALIDATION_FIELDS,
@@ -29,6 +29,7 @@ const EditableInputField = ({
   const [value, setValue] = useState(currentValue);
   const { errors, hasErrors } = useFieldValidation(fieldToValidate, value);
   const [error, setError] = useState<string | null>();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setError(hasErrors ? errors[0] : null);
@@ -58,6 +59,12 @@ const EditableInputField = ({
     }
   };
 
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isEditing]);
+
   return (
     <Field.Root invalid={error ? true : false}>
       <Field.Label>
@@ -66,7 +73,7 @@ const EditableInputField = ({
       <Flex align={"center"} gap={1}>
         {isEditing ? (
           <>
-            <Input value={value} onChange={handleOnChange} />
+            <Input ref={inputRef} value={value} onChange={handleOnChange} />
             <IconButton variant="outline" size="xs" onClick={handleOnClear}>
               <LuX />
             </IconButton>

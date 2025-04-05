@@ -1,5 +1,5 @@
 import DisplayCharacters from "@/components/DisplayCharacters";
 
-export default function Home() {
+export default function InformationPage() {
   return <DisplayCharacters />;
 }

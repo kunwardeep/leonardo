@@ -61,6 +61,10 @@ const CharactersPagination = ({
     };
   };
 
+  if (!buttonGroupSize) {
+    return;
+  }
+
   return (
     <Pagination.Root
       count={count}

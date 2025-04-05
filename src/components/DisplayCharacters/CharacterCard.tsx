@@ -53,6 +53,7 @@ const CharacterCard = ({
         setShowCharacterProperties(true);
     }
   }, [currentBreakPoint]);
+
   return (
     <CharacterCardShell>
       <Flex
