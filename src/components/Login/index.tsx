@@ -60,7 +60,6 @@ const Login = () => {
   }
 
   const handleOnSubmit = (data: { [x: string]: string }) => {
-    // TODO: Stop multiple submit
     const username = data[VALIDATION_FIELDS.USERNAME];
     const jobTitle = data[VALIDATION_FIELDS.JOB_TITLE];
     if (username && jobTitle) {
