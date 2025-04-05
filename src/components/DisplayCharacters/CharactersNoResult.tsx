@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, VStack, Text } from "@chakra-ui/react";
+import { Box, Icon, VStack, Text } from "@chakra-ui/react";
 import React from "react";
 import { CiCircleInfo as InfoIcon } from "react-icons/ci";
 

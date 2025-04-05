@@ -10,6 +10,12 @@ const Logout = () => {
   const { user, userLoading } = useUser();
   const router = useRouter();
 
+  useEffect(() => {
+    if (user != null) {
+      router.push("/");
+    }
+  }, [user, router]);
+
   return (
     <Flex padding={10} gap={2}>
       {!userLoading && !user ? (
@@ -20,7 +26,7 @@ const Logout = () => {
           </Text>
         </>
       ) : (
-        <Skeleton height="5" width="50%" />
+        <Skeleton height="5" width="80%" />
       )}
     </Flex>
   );
