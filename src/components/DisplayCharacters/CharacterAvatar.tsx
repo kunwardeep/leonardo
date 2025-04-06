@@ -1,9 +1,10 @@
-import { Image } from "@chakra-ui/react";
+import Image from "next/image";
 import React from "react";
 
 const CharacterAvatar = ({
   src,
   size,
+  alt,
 }: {
   size: number;
   src: string;
@@ -15,7 +16,7 @@ const CharacterAvatar = ({
       src={src}
       width={size}
       height={size}
-      alt="Picture of the user"
+      alt={alt}
     />
   );
 };

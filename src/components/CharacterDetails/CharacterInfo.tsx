@@ -2,7 +2,6 @@ import { ICharacter } from "@/hooks/useGetCharacter";
 import {
   Box,
   Text,
-  Image,
   VStack,
   HStack,
   Badge,
@@ -10,6 +9,8 @@ import {
   WrapItem,
   Heading,
 } from "@chakra-ui/react";
+
+import CharacterAvatar from "../DisplayCharacters/CharacterAvatar";
 
 interface CharacterInfoProps {
   character: ICharacter;
@@ -30,13 +31,10 @@ const CharacterInfo: React.FC<CharacterInfoProps> = ({ character }) => {
     >
       <VStack align="start">
         <HStack>
-          <Image
-            tabIndex={0}
+          <CharacterAvatar
             src={character.image}
             alt={`Portrait of ${character.name}`}
-            borderRadius="full"
-            boxSize="120px"
-            objectFit="cover"
+            size={100}
           />
           <Box>
             <Heading tabIndex={0} size="md" id="character-info-heading">
