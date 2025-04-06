@@ -38,7 +38,9 @@ const UserMenu = ({
         <Menu.Positioner>
           <Menu.Content>
             <Menu.Item asChild value="user-settings">
-              <Link href={"/settings"}>User Settings</Link>
+              <Link href={"/settings"} aria-label={"Go to User Settings"}>
+                User Settings
+              </Link>
             </Menu.Item>
             <Menu.Item
               onClick={handleLogoutUser}
@@ -55,10 +57,10 @@ const UserMenu = ({
   );
 };
 
-const Logo = ({ linkTo }: { linkTo: string }) => {
+const Logo = ({ link }: { link: { to: string; ariaLabel: string } }) => {
   return (
     <Avatar.Root shape="rounded" size="2xl" cursor={"pointer"}>
-      <Link href={linkTo}>
+      <Link href={link.to} aria-label={link.ariaLabel}>
         <Image
           src={HomePageIcon}
           alt="Home Page"
@@ -71,9 +73,9 @@ const Logo = ({ linkTo }: { linkTo: string }) => {
   );
 };
 
-const LogoText = ({ linkTo }: { linkTo: string }) => {
+const LogoText = ({ link }: { link: { to: string; ariaLabel: string } }) => {
   return (
-    <Link href={linkTo}>
+    <Link href={link.to} aria-label={link.ariaLabel}>
       <Text
         textStyle="4xl"
         mdDown={{ textStyle: "2xl" }}
@@ -89,13 +91,16 @@ const LogoText = ({ linkTo }: { linkTo: string }) => {
 
 const UserName = ({
   username,
-  linkTo,
+  link,
 }: {
   username: string;
-  linkTo: string;
+  link: {
+    to: string;
+    ariaLabel: string;
+  };
 }) => {
   return (
-    <Link href={linkTo}>
+    <Link href={link.to} aria-label={link.ariaLabel}>
       <Text
         textStyle="1xl"
         hideBelow="md"
@@ -147,12 +152,19 @@ const Header = () => {
   return (
     <Flex align="center" justifyContent={"space-between"} padding={1}>
       <Flex align="center" gap={5} padding={1}>
-        <Logo linkTo={"/information"} />
-        <LogoText linkTo={"/information"} />
+        <Logo
+          link={{ to: "/information", ariaLabel: "Go to information page" }}
+        />
+        <LogoText
+          link={{ to: "/information", ariaLabel: "Go to information page" }}
+        />
       </Flex>
       {user && (
         <Flex align="center" gap={5} padding={1}>
-          <UserName username={user.username} linkTo={"/settings"} />
+          <UserName
+            username={user.username}
+            link={{ to: "/settings", ariaLabel: "Go to settings page" }}
+          />
           <UserMenu username={user.username} logoutUser={removeUser} />
         </Flex>
       )}
