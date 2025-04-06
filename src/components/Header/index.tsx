@@ -23,8 +23,7 @@ const UserMenu = ({
   const handleLogoutUser = () => {
     const logoutSuccess = logoutUser();
     if (logoutSuccess) {
-      sessionStorage.clear();
-      router.refresh();
+      router.push("/");
     }
   };
 

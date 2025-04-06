@@ -19,15 +19,19 @@ const DisplayCharacters = () => {
   );
 };
 
+const getPageFromSearchParams = (searchParams: URLSearchParams) => {
+  const page = searchParams.get("page");
+  return page ? Number(page) || 1 : 1;
+};
+
 const DisplayCharactersComponent = () => {
   const [showPagination, setShowPagination] = useState(false);
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
 
-  const currentPage = Number(searchParams.get("page") || 1);
   const { loading, data, error, refetch } = useGetCharacters({
-    page: currentPage,
+    page: getPageFromSearchParams(searchParams),
   });
 
   const handleRefetch = () => {
@@ -95,7 +99,7 @@ const DisplayCharactersComponent = () => {
           <CharactersPagination
             pageSize={20}
             count={data.characters.info.count}
-            currentPage={currentPage}
+            currentPage={getPageFromSearchParams(searchParams)}
             navigate={navigateToPage}
           />
         )}

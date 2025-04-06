@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 const LOCAL_STORAGE_KEY = "leonardo_user";
 
 const getUser = (): User | null => {
+  console.log("getUser");
   try {
     const storedUser = localStorage.getItem(LOCAL_STORAGE_KEY);
     return storedUser ? JSON.parse(storedUser) : null;
@@ -65,7 +66,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const deleteUser = () => {
-    return removeUser();
+    const userRemoved = removeUser();
+    if (userRemoved) {
+      setUser(null);
+    }
+    return userRemoved;
   };
 
   const fetchUser = () => {
