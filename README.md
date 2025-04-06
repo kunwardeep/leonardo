@@ -8,7 +8,6 @@ This is a web application built with Next.js, Chakra UI, and Apollo Client. It a
 - **Character Display**: Browse and view detailed information about characters.
 - **Pagination**: Navigate through pages of characters.
 - **User Settings**: Edit and save user details like username and job title.
-- **Dark Mode**: Toggle between light and dark themes.
 - **Error Handling**: Graceful error handling with retry options.
 
 ## Tech Stack
