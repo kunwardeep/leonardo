@@ -24,7 +24,6 @@ const CharactersPagination = ({
   currentPage,
   navigate,
 }: ICharactersPagination) => {
-  const [page, setPage] = useState(currentPage);
   const [buttonGroupSize, setButtonGroupSize] = useState<
     | typeof BTN_GROUP_SZ_MOBILE
     | typeof BTN_GROUP_SZ_TABLET
@@ -49,15 +48,8 @@ const CharactersPagination = ({
     }
   }, [currentBreakPoint]);
 
-  useEffect(() => {
-    setPage(currentPage);
-  }, [currentPage]);
-
-  const handlePageChange = (
-    setPage: React.Dispatch<React.SetStateAction<number>>
-  ) => {
+  const handlePageChange = () => {
     return (e: { page: number }) => {
-      setPage(e.page);
       navigate(e.page);
     };
   };
@@ -70,8 +62,8 @@ const CharactersPagination = ({
     <Pagination.Root
       count={count}
       pageSize={pageSize}
-      page={page}
-      onPageChange={handlePageChange(setPage)}
+      page={currentPage}
+      onPageChange={handlePageChange()}
       paddingTop={10}
       siblingCount={0}
     >
