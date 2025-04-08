@@ -8,12 +8,10 @@ const CharacterAvatar = ({
   src,
   size,
   alt,
-  n,
 }: {
   size: number;
   src: string;
   alt: string;
-  n: number;
 }) => {
   return (
     <Image
