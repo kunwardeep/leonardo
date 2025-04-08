@@ -5,7 +5,7 @@ import CharacterCard from "./CharacterCard";
 import { Flex, For } from "@chakra-ui/react";
 import CharactersLoading from "./CharactersLoading";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useTransition } from "react";
 import CharactersPagination from "./CharactersPagination";
 import CharactersNoResult from "./CharactersNoResult";
 import AuthGuard from "@/components/Auth/AuthGuard";
@@ -25,6 +25,7 @@ const getPageFromSearchParams = (searchParams: URLSearchParams) => {
 };
 
 const DisplayCharactersComponent = () => {
+  const [isPending, startTransition] = useTransition();
   const [showPagination, setShowPagination] = useState(false);
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -48,8 +49,10 @@ const DisplayCharactersComponent = () => {
     [searchParams]
   );
 
-  const navigateToPage = (page: number) => {
-    router.push(pathname + "?" + createQueryString("page", page));
+  const navigateToPage = (newPage: number) => {
+    startTransition(() => {
+      router.push(pathname + "?" + createQueryString("page", newPage));
+    });
   };
 
   useEffect(() => {
@@ -58,7 +61,7 @@ const DisplayCharactersComponent = () => {
     }
   }, [data?.characters.info.count]);
 
-  if (loading) {
+  if (loading || isPending) {
     return <CharactersLoading />;
   }
 
