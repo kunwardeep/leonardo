@@ -61,13 +61,7 @@ const Logo = ({ link }: { link: { to: string; ariaLabel: string } }) => {
   return (
     <Avatar.Root shape="rounded" size="2xl" cursor={"pointer"}>
       <Link href={link.to} aria-label={link.ariaLabel}>
-        <Image
-          src={HomePageIcon}
-          alt="Home Page"
-          layout="intrinsic"
-          width={100}
-          height={100}
-        />
+        <Image src={HomePageIcon} alt="Home Page" width={200} height={200} />
       </Link>
     </Avatar.Root>
   );

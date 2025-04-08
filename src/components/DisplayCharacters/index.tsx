@@ -73,7 +73,7 @@ const DisplayCharactersComponent = () => {
 
   if (data) {
     return (
-      <Flex padding={10} wrap={"wrap"} align="center" justify="center">
+      <Flex padding={6} wrap={"wrap"} align="center" justify="center">
         <Flex
           gap={2}
           direction="row"
