@@ -5,6 +5,7 @@ import { Provider as ChakraProvider } from "@/components/ChakraUi/provider";
 import ApolloProviderWrapper from "@/components/ApolloProviderWrapper";
 import Chrome from "@/components/Chrome";
 import { UserProvider } from "@/components/Context/UserContext";
+import Head from "next/head";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,9 +26,13 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props;
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://rickandmortyapi.com" />
-      </head>
+      <Head>
+        <link
+          rel="preconnect"
+          href="https://rickandmortyapi.com"
+          crossOrigin="anonymous"
+        />
+      </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
