@@ -31,7 +31,7 @@ const DialogBody = ({ characterId }: { characterId: number }) => {
 
 const CharacterDetails = ({ characterId, children }: ICharacterDetails) => {
   return (
-    <Dialog.Root scrollBehavior="inside" size="sm">
+    <Dialog.Root scrollBehavior="inside" size="sm" lazyMount unmountOnExit>
       <Dialog.Trigger asChild>
         <Button variant="plain" position="unset">
           {children}
