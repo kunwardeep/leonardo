@@ -20,7 +20,6 @@ const CharacterAvatar = ({
       width={size}
       height={size}
       alt={alt}
-      priority
       placeholder="blur"
       blurDataURL={DEFAULT_AVATAR_BASE64}
     />

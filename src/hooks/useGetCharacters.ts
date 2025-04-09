@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useLazyQuery, useQuery } from "@apollo/client";
 
 const GET_CHARACTERS = gql`
   query GetCharacters($page: Int!) {
@@ -48,6 +48,12 @@ interface IUseGetCharactersResponse {
 const useGetCharacters = ({ page }: IUseCharacters) => {
   return useQuery<IUseGetCharactersResponse>(GET_CHARACTERS, {
     variables: { page },
+    notifyOnNetworkStatusChange: true,
+  });
+};
+
+export const useGetCharactersLazy = () => {
+  return useLazyQuery<IUseGetCharactersResponse>(GET_CHARACTERS, {
     notifyOnNetworkStatusChange: true,
   });
 };

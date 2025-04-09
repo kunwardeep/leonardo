@@ -1,6 +1,6 @@
 "use client";
 
-import useGetCharacters from "@/hooks/useGetCharacters";
+import { useGetCharactersLazy } from "@/hooks/useGetCharacters";
 import CharacterCard from "./CharacterCard";
 import { Flex, For } from "@chakra-ui/react";
 import CharactersLoading from "./CharactersLoading";
@@ -30,13 +30,12 @@ const DisplayCharactersComponent = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+  const currentPage = getPageFromSearchParams(searchParams);
 
-  const { loading, data, error, refetch } = useGetCharacters({
-    page: getPageFromSearchParams(searchParams),
-  });
+  const [fetchData, { loading, error, data }] = useGetCharactersLazy();
 
   const handleRefetch = () => {
-    refetch();
+    fetchData({ variables: { page: currentPage } });
   };
 
   const createQueryString = useCallback(
@@ -49,11 +48,15 @@ const DisplayCharactersComponent = () => {
     [searchParams]
   );
 
-  const navigateToPage = (newPage: number) => {
+  const navigateToPage = (page: number) => {
     startTransition(() => {
-      router.push(pathname + "?" + createQueryString("page", newPage));
+      router.push(pathname + "?" + createQueryString("page", page));
     });
   };
+
+  useEffect(() => {
+    fetchData({ variables: { page: currentPage } });
+  }, [fetchData, currentPage]);
 
   useEffect(() => {
     if (data?.characters.info.count) {
@@ -102,7 +105,7 @@ const DisplayCharactersComponent = () => {
           <CharactersPagination
             pageSize={20}
             count={data.characters.info.count}
-            currentPage={getPageFromSearchParams(searchParams)}
+            currentPage={currentPage}
             navigate={navigateToPage}
           />
         )}
