@@ -8,13 +8,16 @@ const CharacterAvatar = ({
   src,
   size,
   alt,
+  priority,
 }: {
   size: number;
   src: string;
   alt: string;
+  priority: boolean;
 }) => {
   return (
     <Image
+      priority={priority}
       className="rounded-full"
       src={src}
       width={size}

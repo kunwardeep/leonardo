@@ -65,7 +65,12 @@ const CharacterCard = ({
         justify="center"
         position={"relative"}
       >
-        <CharacterAvatar src={image.src} alt={image.alt} size={imageSize} />
+        <CharacterAvatar
+          src={image.src}
+          alt={image.alt}
+          size={imageSize}
+          priority={id % 21 === 0}
+        />
         <CharacterDetails characterId={id}>
           <Tooltip
             aria-label={`Full name: ${name}`}

@@ -35,6 +35,7 @@ const CharacterInfo: React.FC<CharacterInfoProps> = ({ character }) => {
             src={character.image}
             alt={`Portrait of ${character.name}`}
             size={100}
+            priority
           />
           <Box>
             <Heading tabIndex={0} size="md" id="character-info-heading">
