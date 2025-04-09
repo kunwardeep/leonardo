@@ -1,8 +1,6 @@
 "use client";
 
-import useGetCharacters, {
-  useGetCharactersLazy,
-} from "@/hooks/useGetCharacters";
+import { useGetCharactersLazy } from "@/hooks/useGetCharacters";
 import CharacterCard from "./CharacterCard";
 import { Flex, For } from "@chakra-ui/react";
 import CharactersLoading from "./CharactersLoading";
@@ -58,7 +56,7 @@ const DisplayCharactersComponent = () => {
 
   useEffect(() => {
     fetchData({ variables: { page: currentPage } });
-  }, []);
+  }, [fetchData, currentPage]);
 
   useEffect(() => {
     if (data?.characters.info.count) {
