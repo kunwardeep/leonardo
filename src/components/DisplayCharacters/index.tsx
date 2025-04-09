@@ -50,7 +50,9 @@ const DisplayCharactersComponent = () => {
 
   const navigateToPage = (page: number) => {
     startTransition(() => {
-      router.push(pathname + "?" + createQueryString("page", page));
+      router.push(pathname + "?" + createQueryString("page", page), {
+        scroll: false,
+      });
     });
   };
 

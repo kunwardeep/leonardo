@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
         hostname: "rickandmortyapi.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "vercel.com",
+        pathname: "/**",
+      },
     ],
   },
 };
