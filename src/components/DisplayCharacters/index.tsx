@@ -3,7 +3,7 @@
 import { useGetCharactersLazy } from "@/hooks/useGetCharacters";
 import CharactersLoading from "./CharactersLoading";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useCallback, useEffect, useState, useTransition } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AuthGuard from "@/components/Auth/AuthGuard";
 import ErrorComponent from "@/components/ErrorComponent";
 import CharactersResults from "./CharactersResult";
@@ -23,17 +23,17 @@ const getPageFromSearchParams = (searchParams: URLSearchParams) => {
 };
 
 const DisplayCharactersComponent = () => {
-  const [isPending, startTransition] = useTransition();
-  const [showPagination, setShowPagination] = useState(false);
   const searchParams = useSearchParams();
+  const [page, setPage] = useState(getPageFromSearchParams(searchParams));
+  const [showPagination, setShowPagination] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  const currentPage = getPageFromSearchParams(searchParams);
-
-  const [fetchData, { loading, error, data }] = useGetCharactersLazy();
+  // const currentPage = getPageFromSearchParams(searchParams);
+  const [fetchData, { loading: apiLoading, error, data }] =
+    useGetCharactersLazy();
 
   const handleRefetch = () => {
-    fetchData({ variables: { page: currentPage } });
+    fetchData({ variables: { page: page } });
   };
 
   const createQueryString = useCallback(
@@ -47,14 +47,13 @@ const DisplayCharactersComponent = () => {
   );
 
   const navigateToPage = (page: number) => {
-    startTransition(() => {
-      router.push(pathname + "?" + createQueryString("page", page));
-    });
+    setPage(page);
+    router.push(pathname + "?" + createQueryString("page", page));
   };
 
   useEffect(() => {
-    fetchData({ variables: { page: currentPage } });
-  }, [fetchData, currentPage]);
+    fetchData({ variables: { page: page } });
+  }, [fetchData, page]);
 
   useEffect(() => {
     if (data?.characters.info.count) {
@@ -62,7 +61,7 @@ const DisplayCharactersComponent = () => {
     }
   }, [data?.characters.info.count]);
 
-  if (loading || isPending) {
+  if (apiLoading) {
     return (
       <DisplayCharactersShell>
         <CharactersLoading />
@@ -87,7 +86,7 @@ const DisplayCharactersComponent = () => {
         <CharactersResults
           data={data}
           showPagination={showPagination}
-          currentPage={currentPage}
+          page={page}
           navigateToPage={navigateToPage}
         />
       </DisplayCharactersShell>

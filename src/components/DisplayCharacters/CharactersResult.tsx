@@ -8,12 +8,12 @@ import { DEFAULT_NUMBER_OF_CARDS } from "@/consts/";
 const CharactersResults = ({
   data,
   showPagination,
-  currentPage,
+  page,
   navigateToPage,
 }: {
   data: IUseGetCharactersResponse;
   showPagination: boolean;
-  currentPage: number;
+  page: number;
   navigateToPage: (page: number) => void;
 }) => {
   return (
@@ -46,7 +46,7 @@ const CharactersResults = ({
         <CharactersPagination
           pageSize={DEFAULT_NUMBER_OF_CARDS}
           count={data.characters.info.count}
-          currentPage={currentPage}
+          page={page}
           navigate={navigateToPage}
         />
       )}

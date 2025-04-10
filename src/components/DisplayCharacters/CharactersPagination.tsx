@@ -14,14 +14,14 @@ const BTN_GROUP_SZ_MOBILE = "xs";
 interface ICharactersPagination {
   pageSize: number;
   count: number;
-  currentPage: number;
+  page: number;
   navigate: (page: number) => void;
 }
 
 const CharactersPagination = ({
   pageSize,
   count,
-  currentPage,
+  page,
   navigate,
 }: ICharactersPagination) => {
   const [buttonGroupSize, setButtonGroupSize] = useState<
@@ -62,7 +62,7 @@ const CharactersPagination = ({
     <Pagination.Root
       count={count}
       pageSize={pageSize}
-      page={currentPage}
+      page={page}
       onPageChange={handlePageChange()}
       paddingTop={5}
       siblingCount={0}
