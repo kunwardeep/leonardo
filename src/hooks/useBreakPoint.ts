@@ -1,4 +1,4 @@
-import { BREAKPOINT } from "@/consts/breakpoints";
+import { BREAKPOINT } from "@/consts/";
 import { useBreakpointValue } from "@chakra-ui/react";
 
 export const useBreakPoint = () => {

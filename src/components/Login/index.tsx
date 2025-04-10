@@ -12,7 +12,7 @@ import {
   validationSuite,
 } from "@/utils/userDetailsValidation";
 import React from "react";
-import { BREAKPOINT } from "@/consts/breakpoints";
+import { BREAKPOINT } from "@/consts/";
 import { useBreakPoint } from "@/hooks/useBreakPoint";
 
 const Login = () => {

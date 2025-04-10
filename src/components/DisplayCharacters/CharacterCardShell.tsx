@@ -1,7 +1,7 @@
 import { Card } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import React from "react";
-import { BREAKPOINT } from "@/consts/breakpoints";
+import { BREAKPOINT } from "@/consts/";
 import { useBreakPoint } from "@/hooks/useBreakPoint";
 
 const CARD_DIMENSION_DESKTOP = 220;

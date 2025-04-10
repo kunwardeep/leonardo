@@ -1,4 +1,4 @@
-import { CLIENT_VALIDATION_MESSAGES } from "@/consts/clientValidationMessages";
+import { CLIENT_VALIDATION_MESSAGES } from "@/consts/";
 import { useMemo } from "react";
 import { create, enforce, test } from "vest";
 

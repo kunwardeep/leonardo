@@ -9,7 +9,7 @@ import {
 } from "@/utils/userDetailsValidation";
 import { useUser } from "@/components/Context/UserContext";
 import { LuPencilLine, LuX, LuCheck } from "react-icons/lu";
-import { LABEL } from "@/consts/fieldLabel";
+import { LABEL } from "@/consts/";
 import React from "react";
 
 interface IEditableField {

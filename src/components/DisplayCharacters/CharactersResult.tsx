@@ -3,7 +3,7 @@ import CharacterCard from "./CharacterCard";
 import CharactersNoResult from "./CharactersNoResult";
 import CharactersPagination from "./CharactersPagination";
 import { IUseGetCharactersResponse } from "@/hooks/useGetCharacters";
-import { DEFAULT_NUMBER_OF_CARDS } from "@/consts/pageSize";
+import { DEFAULT_NUMBER_OF_CARDS } from "@/consts/";
 
 const CharactersResults = ({
   data,

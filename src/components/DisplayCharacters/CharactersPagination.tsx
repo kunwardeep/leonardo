@@ -1,6 +1,6 @@
 "use client";
 
-import { BREAKPOINT } from "@/consts/breakpoints";
+import { BREAKPOINT } from "@/consts/";
 import { useBreakPoint } from "@/hooks/useBreakPoint";
 import { ButtonGroup, IconButton, Pagination } from "@chakra-ui/react";
 import React, { useEffect } from "react";

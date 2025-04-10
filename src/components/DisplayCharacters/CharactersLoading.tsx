@@ -1,7 +1,7 @@
 import { Flex, For, Skeleton } from "@chakra-ui/react";
 import React from "react";
 import CharacterCardShell from "./CharacterCardShell";
-import { DEFAULT_NUMBER_OF_CARDS } from "@/consts/pageSize";
+import { DEFAULT_NUMBER_OF_CARDS } from "@/consts/";
 
 const CharactersLoading = () => {
   return (
