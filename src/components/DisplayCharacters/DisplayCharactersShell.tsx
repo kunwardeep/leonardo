@@ -1,5 +1,4 @@
 import { Flex } from "@chakra-ui/react";
-import SearchBar from "./SearchBar";
 
 const DisplayCharactersShell = ({
   children,
