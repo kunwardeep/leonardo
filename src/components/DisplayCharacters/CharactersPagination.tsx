@@ -1,6 +1,6 @@
 "use client";
 
-import { BREAKPOINT } from "@/consts/breakpoints";
+import { BREAKPOINT } from "@/consts/";
 import { useBreakPoint } from "@/hooks/useBreakPoint";
 import { ButtonGroup, IconButton, Pagination } from "@chakra-ui/react";
 import React, { useEffect } from "react";
@@ -14,14 +14,14 @@ const BTN_GROUP_SZ_MOBILE = "xs";
 interface ICharactersPagination {
   pageSize: number;
   count: number;
-  currentPage: number;
+  page: number;
   navigate: (page: number) => void;
 }
 
 const CharactersPagination = ({
   pageSize,
   count,
-  currentPage,
+  page,
   navigate,
 }: ICharactersPagination) => {
   const [buttonGroupSize, setButtonGroupSize] = useState<
@@ -62,9 +62,9 @@ const CharactersPagination = ({
     <Pagination.Root
       count={count}
       pageSize={pageSize}
-      page={currentPage}
+      page={page}
       onPageChange={handlePageChange()}
-      paddingTop={10}
+      paddingTop={5}
       siblingCount={0}
     >
       <ButtonGroup attached variant="outline" size={buttonGroupSize}>

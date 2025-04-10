@@ -1,3 +1,16 @@
+export const BREAKPOINT = {
+  MOBILE: "mobile",
+  TABLET: "tablet",
+  DESKTOP: "desktop",
+};
+
+export const LABEL = {
+  USERNAME: "Username",
+  JOB_TITLE: "Job Title",
+};
+
+export const DEFAULT_NUMBER_OF_CARDS = 20;
+
 export const CLIENT_VALIDATION_MESSAGES = {
   USER_NAME: {
     IS_EMPTY: "Username is empty",

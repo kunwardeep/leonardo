@@ -5,7 +5,7 @@ import CharacterAvatar from "./CharacterAvatar";
 import CharacterProperties from "./CharacterProperties";
 import React from "react";
 import CharacterDetails from "@/components/CharacterDetails";
-import { BREAKPOINT } from "@/consts/breakpoints";
+import { BREAKPOINT } from "@/consts/";
 import CharacterCardShell from "./CharacterCardShell";
 import { useBreakPoint } from "@/hooks/useBreakPoint";
 

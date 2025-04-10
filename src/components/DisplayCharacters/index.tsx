@@ -1,17 +1,14 @@
 "use client";
 
 import { useGetCharactersLazy } from "@/hooks/useGetCharacters";
-import CharacterCard from "./CharacterCard";
-import { Flex, For } from "@chakra-ui/react";
 import CharactersLoading from "./CharactersLoading";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useCallback, useEffect, useState, useTransition } from "react";
-import CharactersPagination from "./CharactersPagination";
-import CharactersNoResult from "./CharactersNoResult";
+import React, { useCallback, useEffect, useState } from "react";
 import AuthGuard from "@/components/Auth/AuthGuard";
 import ErrorComponent from "@/components/ErrorComponent";
+import CharactersResults from "./CharactersResult";
+import DisplayCharactersShell from "./DisplayCharactersShell";
 
-const DEFAULT_NUMBER_OF_CARDS = 20;
 const DisplayCharacters = () => {
   return (
     <AuthGuard>
@@ -26,17 +23,16 @@ const getPageFromSearchParams = (searchParams: URLSearchParams) => {
 };
 
 const DisplayCharactersComponent = () => {
-  const [isPending, startTransition] = useTransition();
-  const [showPagination, setShowPagination] = useState(false);
   const searchParams = useSearchParams();
+  const [page, setPage] = useState(getPageFromSearchParams(searchParams));
+  const [showPagination, setShowPagination] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  const currentPage = getPageFromSearchParams(searchParams);
-
-  const [fetchData, { loading, error, data }] = useGetCharactersLazy();
+  const [fetchData, { loading: apiLoading, error, data }] =
+    useGetCharactersLazy();
 
   const handleRefetch = () => {
-    fetchData({ variables: { page: currentPage } });
+    fetchData({ variables: { page: page } });
   };
 
   const createQueryString = useCallback(
@@ -50,14 +46,13 @@ const DisplayCharactersComponent = () => {
   );
 
   const navigateToPage = (page: number) => {
-    startTransition(() => {
-      router.push(pathname + "?" + createQueryString("page", page));
-    });
+    setPage(page);
+    router.push(pathname + "?" + createQueryString("page", page));
   };
 
   useEffect(() => {
-    fetchData({ variables: { page: currentPage } });
-  }, [fetchData, currentPage]);
+    fetchData({ variables: { page: page } });
+  }, [fetchData, page]);
 
   useEffect(() => {
     if (data?.characters.info.count) {
@@ -65,52 +60,35 @@ const DisplayCharactersComponent = () => {
     }
   }, [data?.characters.info.count]);
 
-  if (loading || isPending) {
-    return <CharactersLoading cards={DEFAULT_NUMBER_OF_CARDS} />;
+  if (apiLoading) {
+    return (
+      <DisplayCharactersShell>
+        <CharactersLoading />
+      </DisplayCharactersShell>
+    );
   }
 
   if (error) {
     return (
-      <ErrorComponent message="Unable to load users" onRetry={handleRefetch} />
+      <DisplayCharactersShell>
+        <ErrorComponent
+          message="Unable to load users"
+          onRetry={handleRefetch}
+        />
+      </DisplayCharactersShell>
     );
   }
 
   if (data) {
     return (
-      <Flex padding={6} wrap={"wrap"} align="center" justify="center">
-        <Flex
-          gap={2}
-          direction="row"
-          wrap={"wrap"}
-          align="center"
-          justify="center"
-        >
-          <For each={data.characters.results} fallback={<CharactersNoResult />}>
-            {(item) => (
-              <CharacterCard
-                key={item.id}
-                id={item.id}
-                species={item.species}
-                status={item.status}
-                gender={item.gender}
-                image={{
-                  src: item.image,
-                  alt: `Image of character ${item.name}`,
-                }}
-                name={item.name}
-              />
-            )}
-          </For>
-        </Flex>
-        {showPagination && (
-          <CharactersPagination
-            pageSize={DEFAULT_NUMBER_OF_CARDS}
-            count={data.characters.info.count}
-            currentPage={currentPage}
-            navigate={navigateToPage}
-          />
-        )}
-      </Flex>
+      <DisplayCharactersShell>
+        <CharactersResults
+          data={data}
+          showPagination={showPagination}
+          page={page}
+          navigateToPage={navigateToPage}
+        />
+      </DisplayCharactersShell>
     );
   }
 };
