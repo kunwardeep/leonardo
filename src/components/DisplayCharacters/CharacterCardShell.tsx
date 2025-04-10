@@ -27,12 +27,14 @@ const CharacterCardShell = ({ children }: { children: React.ReactNode }) => {
     }
   }, [currentBreakPoint]);
 
+  if (!cardDimension) {
+    return null;
+  }
+
   return (
-    cardDimension && (
-      <Card.Root width={cardDimension} height={cardDimension} overflow="hidden">
-        {children}
-      </Card.Root>
-    )
+    <Card.Root width={cardDimension} height={cardDimension} overflow="hidden">
+      {children}
+    </Card.Root>
   );
 };
 
