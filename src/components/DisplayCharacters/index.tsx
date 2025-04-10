@@ -28,7 +28,6 @@ const DisplayCharactersComponent = () => {
   const [showPagination, setShowPagination] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  // const currentPage = getPageFromSearchParams(searchParams);
   const [fetchData, { loading: apiLoading, error, data }] =
     useGetCharactersLazy();
 
