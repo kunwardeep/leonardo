@@ -3,6 +3,7 @@ import CharacterCard from "./CharacterCard";
 import CharactersNoResult from "./CharactersNoResult";
 import CharactersPagination from "./CharactersPagination";
 import { IUseGetCharactersResponse } from "@/hooks/useGetCharacters";
+import { DEFAULT_NUMBER_OF_CARDS } from "@/consts/pageSize";
 
 const CharactersResults = ({
   data,
@@ -43,7 +44,7 @@ const CharactersResults = ({
       </Flex>
       {showPagination && (
         <CharactersPagination
-          pageSize={20}
+          pageSize={DEFAULT_NUMBER_OF_CARDS}
           count={data.characters.info.count}
           currentPage={currentPage}
           navigate={navigateToPage}

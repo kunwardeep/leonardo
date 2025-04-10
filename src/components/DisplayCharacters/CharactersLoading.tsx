@@ -1,6 +1,7 @@
 import { Flex, For, Skeleton } from "@chakra-ui/react";
 import React from "react";
 import CharacterCardShell from "./CharacterCardShell";
+import { DEFAULT_NUMBER_OF_CARDS } from "@/consts/pageSize";
 
 const CharactersLoading = () => {
   return (
@@ -12,7 +13,12 @@ const CharactersLoading = () => {
         align="center"
         justify="center"
       >
-        <For each={Array.from({ length: 20 }, (_, i) => i + 1)}>
+        <For
+          each={Array.from(
+            { length: DEFAULT_NUMBER_OF_CARDS },
+            (_, i) => i + 1
+          )}
+        >
           {(item) => (
             <CharacterCardShell key={item}>
               <Skeleton height={"full"} />
