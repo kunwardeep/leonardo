@@ -64,7 +64,7 @@ const CharactersPagination = ({
       pageSize={pageSize}
       page={currentPage}
       onPageChange={handlePageChange()}
-      paddingTop={10}
+      paddingTop={5}
       siblingCount={0}
     >
       <ButtonGroup attached variant="outline" size={buttonGroupSize}>

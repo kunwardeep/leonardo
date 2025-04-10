@@ -1,15 +1,12 @@
 "use client";
 
 import { useGetCharactersLazy } from "@/hooks/useGetCharacters";
-import CharacterCard from "./CharacterCard";
-import { Flex, For } from "@chakra-ui/react";
 import CharactersLoading from "./CharactersLoading";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect, useState, useTransition } from "react";
-import CharactersPagination from "./CharactersPagination";
-import CharactersNoResult from "./CharactersNoResult";
 import AuthGuard from "@/components/Auth/AuthGuard";
 import ErrorComponent from "@/components/ErrorComponent";
+import CharactersResults from "./CharactersResult";
 
 const DisplayCharacters = () => {
   return (
@@ -76,40 +73,12 @@ const DisplayCharactersComponent = () => {
 
   if (data) {
     return (
-      <Flex padding={6} wrap={"wrap"} align="center" justify="center">
-        <Flex
-          gap={2}
-          direction="row"
-          wrap={"wrap"}
-          align="center"
-          justify="center"
-        >
-          <For each={data.characters.results} fallback={<CharactersNoResult />}>
-            {(item) => (
-              <CharacterCard
-                key={item.id}
-                id={item.id}
-                species={item.species}
-                status={item.status}
-                gender={item.gender}
-                image={{
-                  src: item.image,
-                  alt: `Image of character ${item.name}`,
-                }}
-                name={item.name}
-              />
-            )}
-          </For>
-        </Flex>
-        {showPagination && (
-          <CharactersPagination
-            pageSize={20}
-            count={data.characters.info.count}
-            currentPage={currentPage}
-            navigate={navigateToPage}
-          />
-        )}
-      </Flex>
+      <CharactersResults
+        data={data}
+        showPagination={showPagination}
+        currentPage={currentPage}
+        navigateToPage={navigateToPage}
+      />
     );
   }
 };

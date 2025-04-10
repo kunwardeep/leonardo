@@ -25,7 +25,7 @@ interface IUseCharacters {
   page: number;
 }
 
-interface IUseGetCharactersResponse {
+export interface IUseGetCharactersResponse {
   characters: {
     info: {
       pages: number;
