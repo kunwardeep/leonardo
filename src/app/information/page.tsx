@@ -1,5 +1,12 @@
-import DisplayCharacters from "@/components/DisplayCharacters";
+"use client";
 
-export default function InformationPage() {
-  return <DisplayCharacters />;
+import dynamic from "next/dynamic";
+
+const ClientSideComponent = dynamic(
+  () => import("@/components/DisplayCharacters"),
+  { ssr: false }
+);
+
+export default function Page() {
+  return <ClientSideComponent />;
 }

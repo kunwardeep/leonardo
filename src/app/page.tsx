@@ -1,5 +1,11 @@
-import Login from "@/components/Login";
+"use client";
 
-export default function Home() {
-  return <Login />;
+import dynamic from "next/dynamic";
+
+const ClientSideComponent = dynamic(() => import("@/components/Login"), {
+  ssr: false,
+});
+
+export default function Page() {
+  return <ClientSideComponent />;
 }
