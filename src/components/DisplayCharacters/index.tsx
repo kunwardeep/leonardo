@@ -11,6 +11,7 @@ import CharactersNoResult from "./CharactersNoResult";
 import AuthGuard from "@/components/Auth/AuthGuard";
 import ErrorComponent from "@/components/ErrorComponent";
 
+const DEFAULT_NUMBER_OF_CARDS = 20;
 const DisplayCharacters = () => {
   return (
     <AuthGuard>
@@ -65,7 +66,7 @@ const DisplayCharactersComponent = () => {
   }, [data?.characters.info.count]);
 
   if (loading || isPending) {
-    return <CharactersLoading />;
+    return <CharactersLoading cards={DEFAULT_NUMBER_OF_CARDS} />;
   }
 
   if (error) {
@@ -103,7 +104,7 @@ const DisplayCharactersComponent = () => {
         </Flex>
         {showPagination && (
           <CharactersPagination
-            pageSize={20}
+            pageSize={DEFAULT_NUMBER_OF_CARDS}
             count={data.characters.info.count}
             currentPage={currentPage}
             navigate={navigateToPage}
