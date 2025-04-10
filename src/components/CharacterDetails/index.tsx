@@ -1,7 +1,7 @@
 import { Button, CloseButton, Dialog, Portal } from "@chakra-ui/react";
 import CharacterInfo from "./CharacterInfo";
 import useGetCharacter from "@/hooks/useGetCharacter";
-import CharacterDetailsLoading from "./CharacterDetailsLoading copy";
+import CharacterDetailsLoading from "./CharacterDetailsLoading";
 import ErrorComponent from "@/components/ErrorComponent";
 
 interface ICharacterDetails {
