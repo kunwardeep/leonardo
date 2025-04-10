@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useState, useTransition } from "react";
 import AuthGuard from "@/components/Auth/AuthGuard";
 import ErrorComponent from "@/components/ErrorComponent";
 import CharactersResults from "./CharactersResult";
+import DisplayCharactersShell from "./DisplayCharactersShell";
 
 const DisplayCharacters = () => {
   return (
@@ -62,23 +63,34 @@ const DisplayCharactersComponent = () => {
   }, [data?.characters.info.count]);
 
   if (loading || isPending) {
-    return <CharactersLoading />;
+    return (
+      <DisplayCharactersShell>
+        <CharactersLoading />
+      </DisplayCharactersShell>
+    );
   }
 
   if (error) {
     return (
-      <ErrorComponent message="Unable to load users" onRetry={handleRefetch} />
+      <DisplayCharactersShell>
+        <ErrorComponent
+          message="Unable to load users"
+          onRetry={handleRefetch}
+        />
+      </DisplayCharactersShell>
     );
   }
 
   if (data) {
     return (
-      <CharactersResults
-        data={data}
-        showPagination={showPagination}
-        currentPage={currentPage}
-        navigateToPage={navigateToPage}
-      />
+      <DisplayCharactersShell>
+        <CharactersResults
+          data={data}
+          showPagination={showPagination}
+          currentPage={currentPage}
+          navigateToPage={navigateToPage}
+        />
+      </DisplayCharactersShell>
     );
   }
 };
