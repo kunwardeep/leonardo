@@ -58,7 +58,7 @@ const SearchField = ({
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [debouncedSearch]);
+  }, [searchFn]);
 
   useEffect(() => {
     setValue(defaultValue);
