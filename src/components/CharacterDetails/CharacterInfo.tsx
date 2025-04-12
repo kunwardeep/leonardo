@@ -33,7 +33,7 @@ const CharacterInfo = ({ characterId }: { characterId: number }) => {
   }
 
   if (!data?.character) {
-    return <CharacterNoResult onRetry={handleRefetch} />;
+    return <CharacterNoResult />;
   }
 
   if (data) {
