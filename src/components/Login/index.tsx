@@ -12,7 +12,7 @@ import {
   validationSuite,
 } from "@/utils/userDetailsValidation";
 import React from "react";
-import { BREAKPOINT } from "@/consts/";
+import { BREAKPOINT, PATHS } from "@/consts/";
 import { useBreakPoint } from "@/hooks/useBreakPoint";
 
 const Login = () => {
@@ -39,7 +39,7 @@ const Login = () => {
 
   useEffect(() => {
     if (userLoggedIn) {
-      router.push("/information");
+      router.push(PATHS.HOME);
     }
   }, [router, userLoggedIn]);
 
@@ -66,7 +66,7 @@ const Login = () => {
     if (username && jobTitle) {
       const saved = setUser({ username, jobTitle });
       if (saved) {
-        router.push("/information");
+        router.push(PATHS.HOME);
       }
     }
   };

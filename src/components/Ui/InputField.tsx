@@ -9,7 +9,7 @@ import {
   UseFormRegisterReturn,
 } from "react-hook-form";
 
-interface IInputWrapper {
+interface IInputFieldWrapper {
   label: string;
   placeholder: string;
   registration: Partial<UseFormRegisterReturn>;
@@ -27,7 +27,7 @@ const InputField = ({
   placeholder,
   error,
   registration,
-}: IInputWrapper) => {
+}: IInputFieldWrapper) => {
   const { onChange, onBlur, ref, name } = registration;
   const [placeHolderText, setPlaceHolderText] = useState(placeholder);
 
