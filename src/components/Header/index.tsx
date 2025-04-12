@@ -10,6 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Menu, Portal } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
+import { PATHS } from "@/consts";
 
 const UserMenu = ({
   username,
@@ -38,7 +39,7 @@ const UserMenu = ({
         <Menu.Positioner>
           <Menu.Content>
             <Menu.Item asChild value="user-settings">
-              <Link href={"/settings"} aria-label={"Go to User Settings"}>
+              <Link href={PATHS.SETTINGS} aria-label={"Go to User Settings"}>
                 User Settings
               </Link>
             </Menu.Item>
@@ -146,18 +147,16 @@ const Header = () => {
   return (
     <Flex align="center" justifyContent={"space-between"} padding={1}>
       <Flex align="center" gap={5} padding={1}>
-        <Logo
-          link={{ to: "/information", ariaLabel: "Go to information page" }}
-        />
+        <Logo link={{ to: PATHS.HOME, ariaLabel: "Go to information page" }} />
         <LogoText
-          link={{ to: "/information", ariaLabel: "Go to information page" }}
+          link={{ to: PATHS.HOME, ariaLabel: "Go to information page" }}
         />
       </Flex>
       {user && (
         <Flex align="center" gap={5} padding={1}>
           <UserName
             username={user.username}
-            link={{ to: "/settings", ariaLabel: "Go to settings page" }}
+            link={{ to: PATHS.SETTINGS, ariaLabel: "Go to settings page" }}
           />
           <UserMenu username={user.username} logoutUser={removeUser} />
         </Flex>
