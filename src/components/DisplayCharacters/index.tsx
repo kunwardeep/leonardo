@@ -8,7 +8,7 @@ import {
   useRouter,
   useSearchParams,
 } from "next/navigation";
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import AuthGuard from "@/components/Auth/AuthGuard";
 import ErrorComponent from "@/components/ErrorComponent";
 import CharactersResults from "./CharactersResult";
@@ -41,7 +41,6 @@ const getInitialState = (
   readOnlySearchParams: ReadonlyURLSearchParams
 ): IState => {
   const params = new URLSearchParams(readOnlySearchParams.toString());
-
   const species = params.get(SearchFilter.SPECIES) ?? undefined;
   const gender = params.get(SearchFilter.GENDER) ?? undefined;
   const name = params.get(SearchFilter.NAME) ?? undefined;
@@ -89,6 +88,7 @@ const DisplayCharactersComponent = () => {
   const readOnlySearchParams = useSearchParams();
   const [fetchData, { loading: apiLoading, error, data }] =
     useGetCharactersLazy();
+  const navigationRef = useRef(false);
 
   const showPagination = useMemo(() => {
     const count = data?.characters?.info?.count;
@@ -103,6 +103,7 @@ const DisplayCharactersComponent = () => {
   const pathQuery: string = createQueryString(state);
 
   const handleFetch = useCallback(() => {
+    navigationRef.current = true;
     fetchData({ variables: state });
   }, [fetchData, state]);
 
@@ -126,7 +127,7 @@ const DisplayCharactersComponent = () => {
     // /back/fwd
     const params = new URLSearchParams(readOnlySearchParams.toString());
 
-    if (params.toString() !== pathQuery) {
+    if (!navigationRef.current && params.toString() !== pathQuery) {
       const page = getPageNumber(params);
       const name = params.get(SearchFilter.NAME);
       const status = params.get(SearchFilter.STATUS);
@@ -139,7 +140,9 @@ const DisplayCharactersComponent = () => {
       updateSpeciesFilter(dispatch, species || "");
       updateGenderFilter(dispatch, gender || "");
     }
-  }, [readOnlySearchParams]);
+
+    navigationRef.current = false;
+  }, [dispatch, readOnlySearchParams, pathQuery]);
 
   return (
     <DisplayCharactersShell>
