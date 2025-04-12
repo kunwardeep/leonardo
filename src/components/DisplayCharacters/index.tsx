@@ -1,13 +1,28 @@
 "use client";
 
-import { useGetCharactersLazy } from "@/hooks/useGetCharacters";
+import { IUseCharacters, useGetCharactersLazy } from "@/hooks/useGetCharacters";
 import CharactersLoading from "./CharactersLoading";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import {
+  ReadonlyURLSearchParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
+import React, { useCallback, useEffect, useMemo } from "react";
 import AuthGuard from "@/components/Auth/AuthGuard";
 import ErrorComponent from "@/components/ErrorComponent";
 import CharactersResults from "./CharactersResult";
 import DisplayCharactersShell from "./DisplayCharactersShell";
+import SearchBar from "./SearchBar";
+import useQueryVariableReducer, {
+  IState,
+  updateGenderFilter,
+  updateNameFilter,
+  updatePage,
+  updateSpeciesFilter,
+  updateStatusFilter,
+} from "@/hooks/useQueryVariableReducer";
+import { SearchFilter } from "@/consts";
 
 const DisplayCharacters = () => {
   return (
@@ -17,80 +32,166 @@ const DisplayCharacters = () => {
   );
 };
 
-const getPageFromSearchParams = (searchParams: URLSearchParams) => {
-  const page = searchParams.get("page");
-  return page ? Number(page) || 1 : 1;
+const getPageNumber = (params: URLSearchParams) => {
+  const rawPageParam = params.get(SearchFilter.PAGE);
+  const pageNumber = rawPageParam ? Number(rawPageParam) || 1 : 1;
+  return pageNumber < 1 ? 1 : pageNumber;
+};
+
+const getInitialState = (
+  readOnlySearchParams: ReadonlyURLSearchParams
+): IState => {
+  const params = new URLSearchParams(readOnlySearchParams.toString());
+
+  const species = params.get(SearchFilter.SPECIES) ?? undefined;
+  const gender = params.get(SearchFilter.GENDER) ?? undefined;
+  const name = params.get(SearchFilter.NAME) ?? undefined;
+  const status = params.get(SearchFilter.STATUS) ?? undefined;
+
+  return {
+    page: getPageNumber(params),
+    filter: {
+      name: name,
+      species: species,
+      gender: gender,
+      status: status,
+    },
+  };
+};
+
+const createQueryString = (queryVariables: IUseCharacters) => {
+  const searchParams = new URLSearchParams();
+  const page = queryVariables.page;
+  const filter = queryVariables.filter;
+
+  searchParams.set(SearchFilter.PAGE, page as unknown as string);
+
+  if (filter) {
+    if (filter.name) {
+      searchParams.set(SearchFilter.NAME, filter.name);
+    }
+    if (filter.status) {
+      searchParams.set(SearchFilter.STATUS, filter.status);
+    }
+    if (filter.species) {
+      searchParams.set(SearchFilter.SPECIES, filter.species);
+    }
+    if (filter.gender) {
+      searchParams.set(SearchFilter.GENDER, filter.gender);
+    }
+  }
+
+  return searchParams.toString();
 };
 
 const DisplayCharactersComponent = () => {
-  const searchParams = useSearchParams();
-  const [page, setPage] = useState(getPageFromSearchParams(searchParams));
-  const [showPagination, setShowPagination] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const readOnlySearchParams = useSearchParams();
   const [fetchData, { loading: apiLoading, error, data }] =
     useGetCharactersLazy();
 
-  const handleRefetch = () => {
-    fetchData({ variables: { page: page } });
-  };
+  const showPagination = useMemo(() => {
+    const count = data?.characters?.info?.count;
+    return Boolean(count && count > 20);
+  }, [data]);
 
-  const createQueryString = useCallback(
-    (name: string, value: number) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value.toString());
-
-      return params.toString();
-    },
-    [searchParams]
+  const [state, dispatch] = useQueryVariableReducer(
+    getInitialState(readOnlySearchParams)
   );
 
-  const navigateToPage = (page: number) => {
-    setPage(page);
-    router.push(pathname + "?" + createQueryString("page", page));
-  };
+  const currentPage = state.page;
+  const pathQuery: string = createQueryString(state);
+
+  const handleFetch = useCallback(() => {
+    fetchData({ variables: state });
+  }, [fetchData, state]);
+
+  const navigateToPage = useCallback(
+    (page: number) => {
+      updatePage(dispatch, page);
+    },
+    [dispatch]
+  );
+
+  const handleSearch = useCallback(
+    (value: string, filter: SearchFilter) => {
+      const trimmedValue = value.trim();
+      switch (filter) {
+        case SearchFilter.NAME:
+          updatePage(dispatch, 1);
+          updateNameFilter(dispatch, trimmedValue);
+          break;
+        case SearchFilter.STATUS:
+          updatePage(dispatch, 1);
+          updateStatusFilter(dispatch, trimmedValue);
+          break;
+        case SearchFilter.SPECIES:
+          updatePage(dispatch, 1);
+          updateSpeciesFilter(dispatch, trimmedValue);
+          break;
+        case SearchFilter.GENDER:
+          updatePage(dispatch, 1);
+          updateGenderFilter(dispatch, trimmedValue);
+          break;
+      }
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
-    fetchData({ variables: { page: page } });
-  }, [fetchData, page]);
+    handleFetch();
+  }, [handleFetch]);
 
   useEffect(() => {
-    if (data?.characters.info.count) {
-      setShowPagination(true);
+    router.push(`${pathname}?${pathQuery}`);
+  }, [router, pathname, pathQuery]);
+
+  useEffect(() => {
+    // handle url changes outside of the component
+    // /back/fwd
+    const params = new URLSearchParams(readOnlySearchParams.toString());
+
+    if (params.toString() !== pathQuery) {
+      const page = getPageNumber(params);
+      const name = params.get(SearchFilter.NAME);
+      const status = params.get(SearchFilter.STATUS);
+      const species = params.get(SearchFilter.SPECIES);
+      const gender = params.get(SearchFilter.GENDER);
+
+      updatePage(dispatch, page);
+      updateNameFilter(dispatch, name || "");
+      updateStatusFilter(dispatch, status || "");
+      updateSpeciesFilter(dispatch, species || "");
+      updateGenderFilter(dispatch, gender || "");
     }
-  }, [data?.characters.info.count]);
+  }, [readOnlySearchParams]);
 
-  if (apiLoading) {
-    return (
-      <DisplayCharactersShell>
-        <CharactersLoading />
-      </DisplayCharactersShell>
-    );
-  }
-
-  if (error) {
-    return (
-      <DisplayCharactersShell>
-        <ErrorComponent
-          message="Unable to load users"
-          onRetry={handleRefetch}
-        />
-      </DisplayCharactersShell>
-    );
-  }
-
-  if (data) {
-    return (
-      <DisplayCharactersShell>
+  return (
+    <DisplayCharactersShell>
+      <SearchBar
+        searchFn={handleSearch}
+        searchFunctionality={{
+          name: { defaultValue: state.filter?.name || "" },
+          status: { defaultValue: state.filter?.status || "" },
+          species: { defaultValue: state.filter?.species || "" },
+          gender: { defaultValue: state.filter?.gender || "" },
+        }}
+      />
+      {apiLoading && <CharactersLoading />}
+      {error && (
+        <ErrorComponent message="Unable to load users" onRetry={handleFetch} />
+      )}
+      {data && (
         <CharactersResults
           data={data}
           showPagination={showPagination}
-          page={page}
+          page={currentPage}
           navigateToPage={navigateToPage}
         />
-      </DisplayCharactersShell>
-    );
-  }
+      )}
+    </DisplayCharactersShell>
+  );
 };
 
 export default React.memo(DisplayCharacters);

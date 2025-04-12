@@ -1,8 +1,8 @@
 import { gql, useLazyQuery, useQuery } from "@apollo/client";
 
 const GET_CHARACTERS = gql`
-  query GetCharacters($page: Int!) {
-    characters(page: $page) {
+  query GetCharacters($page: Int!, $filter: FilterCharacter) {
+    characters(page: $page, filter: $filter) {
       info {
         pages
         count
@@ -21,8 +21,16 @@ const GET_CHARACTERS = gql`
   }
 `;
 
-interface IUseCharacters {
+export interface ISearchFilter {
+  name?: string;
+  status?: string;
+  species?: string;
+  gender?: string;
+}
+
+export interface IUseCharacters {
   page: number;
+  filter?: ISearchFilter;
 }
 
 export interface IUseGetCharactersResponse {
@@ -45,9 +53,9 @@ export interface IUseGetCharactersResponse {
   };
 }
 
-const useGetCharacters = ({ page }: IUseCharacters) => {
+const useGetCharacters = ({ page, filter }: IUseCharacters) => {
   return useQuery<IUseGetCharactersResponse>(GET_CHARACTERS, {
-    variables: { page },
+    variables: { page, filter },
     notifyOnNetworkStatusChange: true,
   });
 };

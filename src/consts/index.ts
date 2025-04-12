@@ -23,3 +23,16 @@ export const CLIENT_VALIDATION_MESSAGES = {
     TOO_LONG: "Job title can't be more than 50 characters",
   },
 };
+
+export const PATHS = {
+  HOME: "/information?page=1",
+  SETTINGS: "settings",
+};
+
+export enum SearchFilter {
+  NAME = "name",
+  STATUS = "status",
+  SPECIES = "species",
+  GENDER = "gender",
+  PAGE = "page",
+}
