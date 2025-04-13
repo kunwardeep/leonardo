@@ -55,7 +55,6 @@ const CharacterInfo = ({ characterId }: { characterId: number }) => {
             <CharacterAvatar
               src={character.image}
               alt={`Portrait of ${character.name}`}
-              size={100}
             />
             <Box>
               <Heading tabIndex={0} size="md" id="character-info-heading">
