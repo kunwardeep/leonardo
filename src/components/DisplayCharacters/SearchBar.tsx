@@ -2,9 +2,8 @@
 
 import { Flex } from "@chakra-ui/react";
 import SearchField from "../Ui/SearchField";
-import { useBreakPoint } from "@/hooks/useBreakPoint";
-import { useCallback, useEffect, useState } from "react";
-import { BREAKPOINT, SearchFilter } from "@/consts/";
+import { useCallback } from "react";
+import { SearchFilter } from "@/consts/";
 
 interface ISearchBar {
   searchFn: (val: string, filter: SearchFilter) => void;
@@ -90,29 +89,13 @@ const GenderSearch = ({ searchFn, defaultValue }: ISearchField) => {
 };
 
 const SearchBar = ({ searchFn, searchFunctionality }: ISearchBar) => {
-  const currentBreakPoint = useBreakPoint();
-  const [searchBarWrap, setSearchBarWrap] = useState<"wrap" | undefined>();
-
-  useEffect(() => {
-    if (!currentBreakPoint) return;
-
-    switch (currentBreakPoint) {
-      case BREAKPOINT.MOBILE:
-      case BREAKPOINT.TABLET:
-        setSearchBarWrap("wrap");
-        break;
-      case BREAKPOINT.DESKTOP:
-        setSearchBarWrap(undefined);
-    }
-  }, [currentBreakPoint]);
-
   return (
     <Flex
       width={"90%"}
       gap={3}
-      wrap={searchBarWrap}
       justify={"center"}
       zIndex={2}
+      wrap={{ base: "wrap", lg: "nowrap" }}
     >
       {searchFunctionality.name && (
         <NameSearch

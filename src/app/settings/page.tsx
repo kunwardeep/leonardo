@@ -1,11 +1,7 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
-const ClientSideComponent = dynamic(() => import("@/components/UserSettings"), {
-  ssr: false,
-});
+import UserSettings from "@/components/UserSettings";
 
 export default function Page() {
-  return <ClientSideComponent />;
+  return <UserSettings />;
 }
