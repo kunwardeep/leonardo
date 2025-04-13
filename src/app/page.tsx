@@ -1,11 +1,7 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
-const ClientSideComponent = dynamic(() => import("@/components/Login"), {
-  ssr: false,
-});
+import Login from "@/components/Login";
 
 export default function Page() {
-  return <ClientSideComponent />;
+  return <Login />;
 }
