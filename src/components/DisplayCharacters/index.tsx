@@ -13,6 +13,7 @@ import AuthGuard from "@/components/Auth/AuthGuard";
 import ErrorComponent from "@/components/ErrorComponent";
 import CharactersResults from "./CharactersResult";
 import DisplayCharactersShell from "./DisplayCharactersShell";
+import SearchBar from "./SearchBar";
 import useQueryVariableReducer, {
   IState,
   updateGenderFilter,
@@ -114,6 +115,31 @@ const DisplayCharactersComponent = () => {
     [dispatch]
   );
 
+  const handleSearch = useCallback(
+    (value: string, filter: SearchFilter) => {
+      const trimmedValue = value.trim();
+      switch (filter) {
+        case SearchFilter.NAME:
+          updatePage(dispatch, 1);
+          updateNameFilter(dispatch, trimmedValue);
+          break;
+        case SearchFilter.STATUS:
+          updatePage(dispatch, 1);
+          updateStatusFilter(dispatch, trimmedValue);
+          break;
+        case SearchFilter.SPECIES:
+          updatePage(dispatch, 1);
+          updateSpeciesFilter(dispatch, trimmedValue);
+          break;
+        case SearchFilter.GENDER:
+          updatePage(dispatch, 1);
+          updateGenderFilter(dispatch, trimmedValue);
+          break;
+      }
+    },
+    [dispatch]
+  );
+
   useEffect(() => {
     handleFetch();
   }, [handleFetch]);
@@ -146,6 +172,15 @@ const DisplayCharactersComponent = () => {
 
   return (
     <DisplayCharactersShell>
+      <SearchBar
+        searchFn={handleSearch}
+        searchFunctionality={{
+          name: { defaultValue: state.filter?.name || "" },
+          status: { defaultValue: state.filter?.status || "" },
+          species: { defaultValue: state.filter?.species || "" },
+          gender: { defaultValue: state.filter?.gender || "" },
+        }}
+      />
       {apiLoading && <CharactersLoading />}
       {error && (
         <ErrorComponent message="Unable to load users" onRetry={handleFetch} />
