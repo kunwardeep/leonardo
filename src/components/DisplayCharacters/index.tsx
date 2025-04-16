@@ -9,7 +9,6 @@ import {
   useSearchParams,
 } from "next/navigation";
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import AuthGuard from "@/components/Auth/AuthGuard";
 import ErrorComponent from "@/components/ErrorComponent";
 import CharactersResults from "./CharactersResult";
 import DisplayCharactersShell from "./DisplayCharactersShell";
@@ -25,11 +24,7 @@ import useQueryVariableReducer, {
 import { SearchFilter } from "@/consts";
 
 const DisplayCharacters = () => {
-  return (
-    <AuthGuard>
-      <DisplayCharactersComponent />
-    </AuthGuard>
-  );
+  return <DisplayCharactersComponent />;
 };
 
 const getPageNumber = (params: URLSearchParams) => {

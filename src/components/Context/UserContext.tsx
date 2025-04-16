@@ -1,36 +1,9 @@
 "use client";
 
+import { getSession, logout as severLogout } from "@/app/actions/serverActions";
+import { PATHS } from "@/consts";
+import { redirect } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
-const LOCAL_STORAGE_KEY = "leonardo_user";
-
-const getUser = (): User | null => {
-  try {
-    const storedUser = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return storedUser ? JSON.parse(storedUser) : null;
-  } catch (error) {
-    console.error("Error when getting User", error);
-    return null;
-  }
-};
-const storeUser = (user: User): boolean => {
-  try {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
-    return true;
-  } catch (error) {
-    console.error("Error when storing User", error);
-    return false;
-  }
-};
-
-const removeUser = (): boolean => {
-  try {
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
-    return true;
-  } catch (error) {
-    console.error("Error when removing User", error);
-    return false;
-  }
-};
 
 interface User {
   username: string;
@@ -39,9 +12,7 @@ interface User {
 
 interface UserContextType {
   user: User | null;
-  setUser: (user: User) => boolean;
-  removeUser: () => boolean;
-  fetchUser: () => User | null;
+  logout: () => Promise<void>;
   userLoading: boolean;
 }
 
@@ -52,38 +23,33 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [userLoading, setUserLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = getUser();
-    if (storedUser) {
-      setUser(storedUser);
-    }
-    setUserLoading(false);
+    const fn = async () => {
+      const storedUser = await getSession();
+      setUserLoading(false);
+      const user: User = {
+        username: storedUser?.username,
+        jobTitle: storedUser?.jobTitle,
+      };
+
+      setUser(user);
+    };
+
+    fn();
   }, []);
 
-  const saveUser = (user: User) => {
-    setUser(user);
-    return storeUser(user);
-  };
-
-  const deleteUser = () => {
-    const userRemoved = removeUser();
-    if (userRemoved) {
-      setUser(null);
-    }
-    return userRemoved;
-  };
-
-  const fetchUser = () => {
-    return getUser();
+  const logout = async () => {
+    const loggedOut = await severLogout();
+    console.log("loggedOut", loggedOut);
+    setUser(null);
+    redirect(PATHS.LOGIN);
   };
 
   return (
     <UserContext.Provider
       value={{
-        user: user,
-        setUser: saveUser,
-        removeUser: deleteUser,
-        userLoading: userLoading,
-        fetchUser: fetchUser,
+        user,
+        logout,
+        userLoading,
       }}
     >
       {children}

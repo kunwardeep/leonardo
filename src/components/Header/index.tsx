@@ -9,7 +9,6 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Menu, Portal } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
 import { PATHS } from "@/consts";
 
 const UserMenu = ({
@@ -17,17 +16,8 @@ const UserMenu = ({
   logoutUser,
 }: {
   username: string;
-  logoutUser: () => boolean;
+  logoutUser: () => Promise<void>;
 }) => {
-  const router = useRouter();
-
-  const handleLogoutUser = () => {
-    const logoutSuccess = logoutUser();
-    if (logoutSuccess) {
-      router.push("/");
-    }
-  };
-
   return (
     <Menu.Root>
       <Menu.Trigger asChild>
@@ -44,7 +34,7 @@ const UserMenu = ({
               </Link>
             </Menu.Item>
             <Menu.Item
-              onClick={handleLogoutUser}
+              onClick={async () => await logoutUser()}
               value="logout"
               color="fg.error"
               _hover={{ bg: "bg.error", color: "fg.error" }}
@@ -142,8 +132,8 @@ const UserAvatar = ({ username }: { username: string }) => {
 };
 
 const Header = () => {
-  const { user, removeUser } = useUser();
-
+  const { user, logout } = useUser();
+  console.log("user---", user);
   return (
     <Flex align="center" justifyContent={"space-between"} padding={1}>
       <Flex align="center" gap={5} padding={1}>
@@ -152,13 +142,13 @@ const Header = () => {
           link={{ to: PATHS.HOME, ariaLabel: "Go to information page" }}
         />
       </Flex>
-      {user && (
+      {user && user.username && (
         <Flex align="center" gap={5} padding={1}>
           <UserName
             username={user.username}
             link={{ to: PATHS.SETTINGS, ariaLabel: "Go to settings page" }}
           />
-          <UserMenu username={user.username} logoutUser={removeUser} />
+          <UserMenu username={user.username} logoutUser={logout} />
         </Flex>
       )}
     </Flex>

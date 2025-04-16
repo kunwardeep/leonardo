@@ -2,14 +2,10 @@
 
 import { Field, Flex, Text, IconButton, Input } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
-import AuthGuard from "@/components/Auth/AuthGuard";
-import {
-  useFieldValidation,
-  VALIDATION_FIELDS,
-} from "@/utils/userDetailsValidation";
+import { useFieldValidation } from "@/utils/authValidations";
 import { useUser } from "@/components/Context/UserContext";
 import { LuPencilLine, LuX, LuCheck } from "react-icons/lu";
-import { LABEL } from "@/consts/";
+import { LABEL, VALIDATION_FIELDS } from "@/consts/";
 import React from "react";
 
 interface IEditableField {
@@ -125,27 +121,25 @@ const UserSettings = () => {
   };
 
   return (
-    <AuthGuard>
-      {user && (
-        <Flex align="top" justify="center" padding={10} direction="column">
-          <Text paddingBottom={10} textStyle="2xl">
-            User Settings
-          </Text>
-          <EditableInputField
-            fieldToValidate={VALIDATION_FIELDS.USERNAME}
-            currentValue={user.username}
-            label={LABEL.USERNAME}
-            saveValue={saveUserName}
-          />
-          <EditableInputField
-            fieldToValidate={VALIDATION_FIELDS.JOB_TITLE}
-            currentValue={user.jobTitle}
-            label={LABEL.JOB_TITLE}
-            saveValue={saveJobTitle}
-          />
-        </Flex>
-      )}
-    </AuthGuard>
+    user && (
+      <Flex align="top" justify="center" padding={10} direction="column">
+        <Text paddingBottom={10} textStyle="2xl">
+          User Settings
+        </Text>
+        <EditableInputField
+          fieldToValidate={VALIDATION_FIELDS.USERNAME}
+          currentValue={user.username}
+          label={LABEL.USERNAME}
+          saveValue={saveUserName}
+        />
+        <EditableInputField
+          fieldToValidate={VALIDATION_FIELDS.JOB_TITLE}
+          currentValue={user.jobTitle}
+          label={LABEL.JOB_TITLE}
+          saveValue={saveJobTitle}
+        />
+      </Flex>
+    )
   );
 };
 
