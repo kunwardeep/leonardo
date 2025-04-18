@@ -13,13 +13,13 @@ import login, { LoginActionState } from "@/app/actions/serverActions";
 const Login = () => {
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [state, formAction, pending] = useActionState<
-    LoginActionState,
-    FormData
-  >(login, {
-    success: false,
-    errors: {},
-  });
+  const [state, formAction] = useActionState<LoginActionState, FormData>(
+    login,
+    {
+      success: false,
+      errors: {},
+    }
+  );
 
   const {
     reset,
@@ -35,7 +35,7 @@ const Login = () => {
     mode: "onBlur",
   });
 
-  const handleOnSubmit = (data: any) => {
+  const handleOnSubmit = () => {
     // Submit using the native form API so action={formAction} gets triggered
     formRef.current?.submit();
   };
