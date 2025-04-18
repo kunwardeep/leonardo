@@ -97,27 +97,31 @@ const EditableInputField = ({
 };
 
 const UserSettings = () => {
-  const { user, fetchUser, setUser } = useUser();
+  const { user } = useUser();
   const saveUserName = (val: string) => {
-    const savedUser = fetchUser();
-    if (savedUser) {
-      savedUser.username = val;
-      setUser(savedUser);
-      return true;
-    } else {
-      return false;
-    }
+    console.log(val);
+    return true;
+    // const savedUser = fetchUser();
+    // if (savedUser) {
+    //   savedUser.username = val;
+    //   setUser(savedUser);
+    //   return true;
+    // } else {
+    //   return false;
+    // }
   };
 
   const saveJobTitle = (val: string) => {
-    const savedUser = fetchUser();
-    if (savedUser) {
-      savedUser.jobTitle = val;
-      setUser(savedUser);
-      return true;
-    } else {
-      return false;
-    }
+    console.log(val);
+    return true;
+    // const savedUser = fetchUser();
+    // if (savedUser) {
+    //   savedUser.jobTitle = val;
+    //   setUser(savedUser);
+    //   return true;
+    // } else {
+    //   return false;
+    // }
   };
 
   return (
