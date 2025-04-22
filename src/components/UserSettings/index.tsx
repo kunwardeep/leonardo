@@ -46,8 +46,8 @@ const EditableInputField = ({
 
   const handleOnClick = async () => {
     if (!error) {
-      const valuedSaved = await saveValue(value);
-      if (valuedSaved) {
+      const valueSaved = await saveValue(value);
+      if (valueSaved) {
         setIsEditing(false);
       } else {
         setError("Unable to save");
