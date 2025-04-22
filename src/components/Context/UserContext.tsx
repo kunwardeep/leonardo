@@ -18,7 +18,6 @@ interface UserContextType {
   user: User | null;
   logout: () => Promise<void>;
   userLoading: boolean;
-  fetchUser: () => Promise<User | undefined>;
   updateUsername: (username: string) => Promise<boolean>;
   updateJobTitle: (jobTitle: string) => Promise<boolean>;
 }
@@ -55,12 +54,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     redirect(PATHS.LOGIN);
   };
 
-  const fetchUser = async () => {
-    const storedUser = await getSession();
-    setUser(user);
-    return storedUser;
-  };
-
   const updateUsername = async (username: string) => {
     if (!user) {
       return Promise.reject(false);
@@ -93,7 +86,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         user,
         logout,
         userLoading,
-        fetchUser,
         updateUsername,
         updateJobTitle,
       }}
