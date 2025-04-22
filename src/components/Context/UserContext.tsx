@@ -1,36 +1,13 @@
 "use client";
 
+import {
+  getSession,
+  logout as severLogout,
+  updateUser,
+} from "@/app/actions/serverActions";
+import { PATHS } from "@/consts";
+import { redirect } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
-const LOCAL_STORAGE_KEY = "leonardo_user";
-
-const getUser = (): User | null => {
-  try {
-    const storedUser = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return storedUser ? JSON.parse(storedUser) : null;
-  } catch (error) {
-    console.error("Error when getting User", error);
-    return null;
-  }
-};
-const storeUser = (user: User): boolean => {
-  try {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
-    return true;
-  } catch (error) {
-    console.error("Error when storing User", error);
-    return false;
-  }
-};
-
-const removeUser = (): boolean => {
-  try {
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
-    return true;
-  } catch (error) {
-    console.error("Error when removing User", error);
-    return false;
-  }
-};
 
 interface User {
   username: string;
@@ -39,10 +16,10 @@ interface User {
 
 interface UserContextType {
   user: User | null;
-  setUser: (user: User) => boolean;
-  removeUser: () => boolean;
-  fetchUser: () => User | null;
+  logout: () => Promise<void>;
   userLoading: boolean;
+  updateUsername: (username: string) => Promise<boolean>;
+  updateJobTitle: (jobTitle: string) => Promise<boolean>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -52,38 +29,65 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [userLoading, setUserLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = getUser();
-    if (storedUser) {
-      setUser(storedUser);
-    }
-    setUserLoading(false);
+    const fn = async () => {
+      setUserLoading(true);
+      const storedUser = await getSession();
+      setUserLoading(false);
+
+      const user: User | null = storedUser
+        ? {
+            username: storedUser.username,
+            jobTitle: storedUser.jobTitle,
+          }
+        : null;
+
+      setUser(user);
+    };
+
+    fn();
   }, []);
 
-  const saveUser = (user: User) => {
-    setUser(user);
-    return storeUser(user);
+  const logout = async () => {
+    const loggedOut = await severLogout();
+    console.log("loggedOut", loggedOut);
+    setUser(null);
+    redirect(PATHS.LOGIN);
   };
 
-  const deleteUser = () => {
-    const userRemoved = removeUser();
-    if (userRemoved) {
-      setUser(null);
+  const updateUsername = async (username: string) => {
+    if (!user) {
+      return Promise.reject(false);
     }
-    return userRemoved;
+    const userObj = { username, jobTitle: user.jobTitle };
+    const userUpdated = await updateUser(userObj);
+    if (userUpdated) {
+      setUser(userObj);
+    }
+
+    return true;
   };
 
-  const fetchUser = () => {
-    return getUser();
+  const updateJobTitle = async (jobTitle: string) => {
+    if (!user) {
+      return Promise.reject(false);
+    }
+    const userObj = { username: user.username, jobTitle };
+    const userUpdated = await updateUser(userObj);
+    if (userUpdated) {
+      setUser(userObj);
+    }
+
+    return true;
   };
 
   return (
     <UserContext.Provider
       value={{
-        user: user,
-        setUser: saveUser,
-        removeUser: deleteUser,
-        userLoading: userLoading,
-        fetchUser: fetchUser,
+        user,
+        logout,
+        userLoading,
+        updateUsername,
+        updateJobTitle,
       }}
     >
       {children}

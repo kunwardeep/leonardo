@@ -25,8 +25,10 @@ export const CLIENT_VALIDATION_MESSAGES = {
 };
 
 export const PATHS = {
-  HOME: "/information?page=1",
-  SETTINGS: "settings",
+  BASE: "/",
+  LOGIN: "/login",
+  HOME: "/information",
+  SETTINGS: "/settings",
 };
 
 export enum SearchFilter {
@@ -36,3 +38,12 @@ export enum SearchFilter {
   GENDER = "gender",
   PAGE = "page",
 }
+
+export const VALIDATION_FIELDS = {
+  USERNAME: "username",
+  JOB_TITLE: "jobTitle",
+};
+
+export const COOKIE_NAME = {
+  SESSION: "session",
+};

@@ -2,21 +2,17 @@
 
 import { Field, Flex, Text, IconButton, Input } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
-import AuthGuard from "@/components/Auth/AuthGuard";
-import {
-  useFieldValidation,
-  VALIDATION_FIELDS,
-} from "@/utils/userDetailsValidation";
+import { useFieldValidation } from "@/utils/authValidations";
 import { useUser } from "@/components/Context/UserContext";
 import { LuPencilLine, LuX, LuCheck } from "react-icons/lu";
-import { LABEL } from "@/consts/";
+import { LABEL, VALIDATION_FIELDS } from "@/consts/";
 import React from "react";
 
 interface IEditableField {
   fieldToValidate: string;
   currentValue: string;
   label: string;
-  saveValue: (val: string) => boolean;
+  saveValue: (val: string) => Promise<boolean>;
 }
 
 const EditableInputField = ({
@@ -48,10 +44,10 @@ const EditableInputField = ({
     setIsEditing(false);
   };
 
-  const handleOnClick = () => {
+  const handleOnClick = async () => {
     if (!error) {
-      const valuedSaved = saveValue(value);
-      if (valuedSaved) {
+      const valueSaved = await saveValue(value);
+      if (valueSaved) {
         setIsEditing(false);
       } else {
         setError("Unable to save");
@@ -101,51 +97,28 @@ const EditableInputField = ({
 };
 
 const UserSettings = () => {
-  const { user, fetchUser, setUser } = useUser();
-  const saveUserName = (val: string) => {
-    const savedUser = fetchUser();
-    if (savedUser) {
-      savedUser.username = val;
-      setUser(savedUser);
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const saveJobTitle = (val: string) => {
-    const savedUser = fetchUser();
-    if (savedUser) {
-      savedUser.jobTitle = val;
-      setUser(savedUser);
-      return true;
-    } else {
-      return false;
-    }
-  };
+  const { user, updateUsername, updateJobTitle } = useUser();
 
   return (
-    <AuthGuard>
-      {user && (
-        <Flex align="top" justify="center" padding={10} direction="column">
-          <Text paddingBottom={10} textStyle="2xl">
-            User Settings
-          </Text>
-          <EditableInputField
-            fieldToValidate={VALIDATION_FIELDS.USERNAME}
-            currentValue={user.username}
-            label={LABEL.USERNAME}
-            saveValue={saveUserName}
-          />
-          <EditableInputField
-            fieldToValidate={VALIDATION_FIELDS.JOB_TITLE}
-            currentValue={user.jobTitle}
-            label={LABEL.JOB_TITLE}
-            saveValue={saveJobTitle}
-          />
-        </Flex>
-      )}
-    </AuthGuard>
+    user && (
+      <Flex align="top" justify="center" padding={10} direction="column">
+        <Text paddingBottom={10} textStyle="2xl">
+          User Settings
+        </Text>
+        <EditableInputField
+          fieldToValidate={VALIDATION_FIELDS.USERNAME}
+          currentValue={user.username}
+          label={LABEL.USERNAME}
+          saveValue={updateUsername}
+        />
+        <EditableInputField
+          fieldToValidate={VALIDATION_FIELDS.JOB_TITLE}
+          currentValue={user.jobTitle}
+          label={LABEL.JOB_TITLE}
+          saveValue={updateJobTitle}
+        />
+      </Flex>
+    )
   );
 };
 
