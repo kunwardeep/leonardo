@@ -3,8 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Provider as ChakraProvider } from "@/components/ChakraUi/provider";
 import ApolloProviderWrapper from "@/components/ApolloProviderWrapper";
-import Chrome from "@/components/Chrome";
-import { UserProvider } from "@/components/Context/UserContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,7 +19,7 @@ export const metadata: Metadata = {
   description: "Rick and Morty App",
 };
 
-export default function RootLayout(props: { children: React.ReactNode }) {
+export default function Layout(props: { children: React.ReactNode }) {
   const { children } = props;
   return (
     <html lang="en" suppressHydrationWarning>
@@ -36,11 +34,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ApolloProviderWrapper>
-          <ChakraProvider>
-            <UserProvider>
-              <Chrome>{children}</Chrome>
-            </UserProvider>
-          </ChakraProvider>
+          <ChakraProvider>{children}</ChakraProvider>
         </ApolloProviderWrapper>
       </body>
     </html>

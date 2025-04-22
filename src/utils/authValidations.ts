@@ -1,11 +1,7 @@
-import { CLIENT_VALIDATION_MESSAGES } from "@/consts/";
+import { CLIENT_VALIDATION_MESSAGES, VALIDATION_FIELDS } from "@/consts";
 import { useMemo } from "react";
 import { create, enforce, test } from "vest";
-
-export const VALIDATION_FIELDS = {
-  USERNAME: "username",
-  JOB_TITLE: "jobTitle",
-};
+import "vest/enforce/schema";
 
 export const validationSuite = create((data = {}) => {
   if (VALIDATION_FIELDS.USERNAME in data) {
