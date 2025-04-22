@@ -1,5 +1,3 @@
-"use client";
-
 import { Flex } from "@chakra-ui/react";
 import SearchField from "../Ui/SearchField";
 import { useCallback } from "react";
