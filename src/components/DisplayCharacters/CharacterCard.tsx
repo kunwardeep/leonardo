@@ -1,10 +1,10 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { Tooltip } from "@/components/ChakraUi/tooltip";
 import CharacterAvatar from "./CharacterAvatar";
-import CharacterProperties from "./CharacterProperties";
 import React from "react";
 import CharacterDetails from "@/components/CharacterDetails";
 import CharacterCardShell from "./CharacterCardShell";
+import { useRouter } from "next/navigation";
 
 export interface ICharacterCard {
   id: number;
@@ -18,14 +18,8 @@ export interface ICharacterCard {
   name: string;
 }
 
-const CharacterCard = ({
-  id,
-  image,
-  name,
-  status,
-  species,
-  gender,
-}: ICharacterCard) => {
+const CharacterCard = ({ id, image, name }: ICharacterCard) => {
+  const router = useRouter();
   return (
     <CharacterCardShell>
       <Flex
@@ -58,7 +52,7 @@ const CharacterCard = ({
         </CharacterDetails>
       </Flex>
       {/* non clickable area */}
-      <Flex
+      {/* <Flex
         hideBelow="lg"
         border={1}
         gap={1}
@@ -71,7 +65,8 @@ const CharacterCard = ({
           species={species}
           gender={gender}
         />
-      </Flex>
+      </Flex> */}
+      <Button onClick={() => router.push(`/character/${id}`)}>BUTTON </Button>
     </CharacterCardShell>
   );
 };
