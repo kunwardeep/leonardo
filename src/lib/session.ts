@@ -29,6 +29,7 @@ export async function decrypt(cookie: string | undefined) {
     });
     return payload;
   } catch (error) {
+    console.log("Error happened while decrypting", error);
     return undefined;
   }
 }
