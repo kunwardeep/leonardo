@@ -36,8 +36,16 @@ export enum SearchFilter {
   STATUS = "status",
   SPECIES = "species",
   GENDER = "gender",
+}
+
+export enum SearchPageParam {
   PAGE = "page",
 }
+
+export const SearchParams = {
+  ...SearchFilter,
+  ...SearchPageParam,
+} as const;
 
 export const VALIDATION_FIELDS = {
   USERNAME: "username",

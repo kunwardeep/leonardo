@@ -76,4 +76,4 @@ const CharacterCard = ({
   );
 };
 
-export default React.memo(CharacterCard);
+export default CharacterCard;

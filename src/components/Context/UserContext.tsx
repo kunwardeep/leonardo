@@ -49,7 +49,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = async () => {
     const loggedOut = await severLogout();
-    console.log("loggedOut", loggedOut);
     setUser(null);
     redirect(PATHS.LOGIN);
   };

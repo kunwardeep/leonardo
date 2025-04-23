@@ -29,7 +29,6 @@ export async function decrypt(cookie: string | undefined) {
     });
     return payload;
   } catch (error) {
-    console.log("Failed to verify", error);
     return undefined;
   }
 }

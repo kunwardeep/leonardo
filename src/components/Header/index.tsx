@@ -47,4 +47,4 @@ const Header = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   );
 };
 
-export default React.memo(Header);
+export default Header;

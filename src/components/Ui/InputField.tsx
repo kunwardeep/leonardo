@@ -67,4 +67,4 @@ const InputField = ({
   );
 };
 
-export default React.memo(InputField);
+export default InputField;

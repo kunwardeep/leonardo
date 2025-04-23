@@ -28,4 +28,4 @@ const CharacterAvatar = ({ src, alt }: { src: string; alt: string }) => {
   );
 };
 
-export default React.memo(CharacterAvatar);
+export default CharacterAvatar;

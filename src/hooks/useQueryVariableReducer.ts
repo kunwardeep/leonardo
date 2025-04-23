@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useCallback, useReducer } from "react";
 import { ISearchFilter, IUseCharacters } from "./useGetCharacters";
 import { SearchFilter } from "@/consts";
 
@@ -15,47 +15,51 @@ export interface IReducerAction {
   value: string | number;
 }
 
-type DispatchAction = React.Dispatch<IReducerAction>;
-
-export const updatePage = (
-  dispatch: DispatchAction,
-  value: string | number
-) => {
-  dispatch({ type: ActionTypes.CHANGE_PAGE, value: value });
-};
-
-export const updateNameFilter = (
-  dispatch: DispatchAction,
-  value: string | number
-) => {
-  dispatch({ type: ActionTypes.UPDATE_FILTER_NAME, value: value });
-};
-
-export const updateStatusFilter = (
-  dispatch: DispatchAction,
-  value: string | number
-) => {
-  dispatch({ type: ActionTypes.UPDATE_FILTER_STATUS, value: value });
-};
-
-export const updateSpeciesFilter = (
-  dispatch: DispatchAction,
-  value: string | number
-) => {
-  dispatch({ type: ActionTypes.UPDATE_FILTER_SPECIES, value: value });
-};
-
-export const updateGenderFilter = (
-  dispatch: DispatchAction,
-  value: string | number
-) => {
-  dispatch({ type: ActionTypes.UPDATE_FILTER_GENDER, value: value });
-};
-
 export type IState = IUseCharacters;
 
 const useQueryVariableReducer = (initialState: IState) => {
-  return useReducer(queryVariableReducer, initialState);
+  const [state, dispatch] = useReducer(queryVariableReducer, initialState);
+
+  const updatePage = useCallback(
+    (value: number) => {
+      dispatch({ type: ActionTypes.CHANGE_PAGE, value: value });
+    },
+    [dispatch]
+  );
+
+  const updateNameFilter = useCallback(
+    (value: string) => {
+      dispatch({ type: ActionTypes.UPDATE_FILTER_NAME, value: value });
+    },
+    [dispatch]
+  );
+  const updateStatusFilter = useCallback(
+    (value: string) => {
+      dispatch({ type: ActionTypes.UPDATE_FILTER_STATUS, value: value });
+    },
+    [dispatch]
+  );
+  const updateSpeciesFilter = useCallback(
+    (value: string) => {
+      dispatch({ type: ActionTypes.UPDATE_FILTER_SPECIES, value: value });
+    },
+    [dispatch]
+  );
+  const updateGenderFilter = useCallback(
+    (value: string) => {
+      dispatch({ type: ActionTypes.UPDATE_FILTER_GENDER, value: value });
+    },
+    [dispatch]
+  );
+
+  return {
+    state,
+    updatePage,
+    updateNameFilter,
+    updateStatusFilter,
+    updateSpeciesFilter,
+    updateGenderFilter,
+  };
 };
 
 type FilterKey = keyof ISearchFilter;

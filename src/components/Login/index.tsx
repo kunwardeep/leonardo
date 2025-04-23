@@ -20,7 +20,6 @@ const Login = () => {
     success: false,
     errors: {},
   });
-  console.log("isPending", isPending);
 
   const {
     reset,
@@ -98,4 +97,4 @@ const Login = () => {
   );
 };
 
-export default React.memo(Login);
+export default Login;

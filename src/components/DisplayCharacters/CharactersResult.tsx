@@ -7,15 +7,16 @@ import { DEFAULT_NUMBER_OF_CARDS } from "@/consts/";
 
 const CharactersResults = ({
   data,
-  showPagination,
   page,
   navigateToPage,
 }: {
   data: IUseGetCharactersResponse;
-  showPagination: boolean;
   page: number;
   navigateToPage: (page: number) => void;
 }) => {
+  const count = data?.characters?.info?.count;
+  const showPagination = count && Boolean(count && count > 20);
+
   return (
     <Flex padding={6} wrap={"wrap"} align="center" justify="center" gap={5}>
       <Flex
