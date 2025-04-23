@@ -1,5 +1,3 @@
-"use client";
-
 import { ButtonGroup, IconButton, Pagination } from "@chakra-ui/react";
 import React from "react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
@@ -17,18 +15,12 @@ const CharactersPagination = ({
   page,
   navigate,
 }: ICharactersPagination) => {
-  const handlePageChange = () => {
-    return (e: { page: number }) => {
-      navigate(e.page);
-    };
-  };
-
   return (
     <Pagination.Root
       count={count}
       pageSize={pageSize}
       page={page}
-      onPageChange={handlePageChange()}
+      onPageChange={(e) => navigate(e.page)}
       paddingTop={5}
       siblingCount={0}
     >
@@ -64,4 +56,4 @@ const CharactersPagination = ({
   );
 };
 
-export default React.memo(CharactersPagination);
+export default CharactersPagination;

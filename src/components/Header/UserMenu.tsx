@@ -1,5 +1,3 @@
-"use client";
-
 import { PATHS } from "@/consts";
 import { Menu, IconButton, Portal } from "@chakra-ui/react";
 import Link from "next/link";

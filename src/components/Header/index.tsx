@@ -1,5 +1,3 @@
-"use client";
-
 import { Avatar, Flex, Text } from "@chakra-ui/react";
 import HomePageIcon from "@/assets/images/r_and_m.png";
 import React from "react";
@@ -49,4 +47,4 @@ const Header = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   );
 };
 
-export default React.memo(Header);
+export default Header;

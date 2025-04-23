@@ -12,4 +12,4 @@ const Chrome = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default React.memo(Chrome);
+export default Chrome;

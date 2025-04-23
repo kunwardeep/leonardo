@@ -2,7 +2,7 @@
 
 import {
   getSession,
-  logout as severLogout,
+  logout as serverLogout,
   updateUser,
 } from "@/app/actions/serverActions";
 import { PATHS } from "@/consts";
@@ -48,8 +48,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const logout = async () => {
-    const loggedOut = await severLogout();
-    console.log("loggedOut", loggedOut);
+    await serverLogout();
     setUser(null);
     redirect(PATHS.LOGIN);
   };

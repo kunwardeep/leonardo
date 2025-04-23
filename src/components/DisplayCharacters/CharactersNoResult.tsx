@@ -35,4 +35,4 @@ const CharactersNoResult: React.FC<ICharactersNoResult> = ({
   );
 };
 
-export default React.memo(CharactersNoResult);
+export default CharactersNoResult;

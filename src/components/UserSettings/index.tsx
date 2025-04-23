@@ -122,4 +122,4 @@ const UserSettings = () => {
   );
 };
 
-export default React.memo(UserSettings);
+export default UserSettings;

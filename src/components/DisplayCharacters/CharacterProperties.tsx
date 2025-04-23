@@ -109,4 +109,4 @@ const CharacterProperties = ({
   );
 };
 
-export default React.memo(CharacterProperties);
+export default CharacterProperties;

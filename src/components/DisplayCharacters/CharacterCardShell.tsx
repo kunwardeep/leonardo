@@ -13,4 +13,4 @@ const CharacterCardShell = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default React.memo(CharacterCardShell);
+export default CharacterCardShell;

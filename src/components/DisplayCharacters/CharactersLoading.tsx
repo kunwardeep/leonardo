@@ -30,4 +30,4 @@ const CharactersLoading = () => {
   );
 };
 
-export default React.memo(CharactersLoading);
+export default CharactersLoading;
