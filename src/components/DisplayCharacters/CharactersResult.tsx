@@ -15,7 +15,7 @@ const CharactersResults = ({
   navigateToPage: (page: number) => void;
 }) => {
   const count = data?.characters?.info?.count;
-  const showPagination = count && Boolean(count && count > 20);
+  const showPagination = Boolean(count > 20);
 
   return (
     <Flex padding={6} wrap={"wrap"} align="center" justify="center" gap={5}>
